@@ -320,9 +320,9 @@ PRODUCT_PACKAGES += \
     ebtables \
     ethertypes
 
-# QCOM
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/qti_whitelist.xml:system/etc/sysconfig/qti_whitelist.xml
+# TextClassifier smart selection model files
+PRODUCT_PACKAGES += \
+    textclassifier.smartselection.bundle1
 
 # QMI
 PRODUCT_PACKAGES += \
