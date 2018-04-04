@@ -61,6 +61,9 @@ on init
     chmod 0660 /dev/lirc0
 
 on fs
+    # Start HW service manager early
+    start hwservicemanager
+
     mount_all /vendor/etc/fstab.qcom --early
 
     # Keeping following partitions outside fstab file. As user may not have
@@ -247,6 +250,13 @@ on property:sys.shutdown.requested=*
 
 on property:sys.boot_completed=1
     setprop sys.io.scheduler "bfq"
+
+    # Wait for hwservicemanager ready since fsck might be triggered in mount_all --late
+    # In such case, init won't responce the property_set from hwservicemanager and then
+    # cause services for bootanim not running.
+    wait_for_prop hwservicemanager.ready true
+    # Mount RW partitions which need run fsck
+    mount_all /vendor/etc/fstab.qcom --late
 
 service vendor.qseecomd /vendor/bin/qseecomd
    class core
