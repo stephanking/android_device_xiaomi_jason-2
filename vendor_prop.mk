@@ -151,7 +151,8 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # Radio
 PRODUCT_PROPERTY_OVERRIDES += \
     persist.vendor.radio.force_on_dc=true \
-    persist.vendor.qti.telephony.vt_cam_interface=1
+    persist.vendor.qti.telephony.vt_cam_interface=1 \
+    rild.libpath=/vendor/lib64/libril-wrapper.so
 
 # Sensors
 PRODUCT_PROPERTY_OVERRIDES += \
