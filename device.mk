@@ -268,7 +268,15 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/nfc/libnfc-nxp_default.conf:system/etc/libnfc-nxp_default.conf \
     $(LOCAL_PATH)/configs/nfc/libnfc-nxp.conf:system/etc/libnfc-nxp.conf
 
-#FM
+# QMI
+PRODUCT_PACKAGES += \
+    libjson
+
+# XiaomiParts
+PRODUCT_PACKAGES += \
+    XiaomiParts
+
+# FM
 PRODUCT_PACKAGES += \
     FM2 \
     libqcomfm_jni \
