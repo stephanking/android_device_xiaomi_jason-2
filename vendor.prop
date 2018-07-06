@@ -2,7 +2,6 @@ persist.sys.job_delay=true
 persist.sys.perf.debug=true
 ro.control_privapp_permissions=log
 drm.service.enabled=true
-qemu.hw.mainkeys=0
 video.disable.ubwc=1
 dalvik.vm.heapgrowthlimit=256m
 dalvik.vm.heapstartsize=8m

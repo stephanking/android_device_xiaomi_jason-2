@@ -248,10 +248,6 @@ sys.autobrightness_optimize=true
 persist.vendor.radio.snapshot_enabled=1
 persist.vendor.radio.snapshot_timer=5
 
-#enable all system restart_level to relative
-persist.sys.ssr.restart_level=ALL_ENABLE
-qemu.hw.mainkeys=0
-
 #low audio flinger standby delay to reduce power consumption
 ro.audio.flinger_standbytime_ms=300
 
