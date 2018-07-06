@@ -59,36 +59,42 @@ vendor/bin/hw/android.hardware.bluetooth@1.0-service-qti
 vendor/etc/init/android.hardware.bluetooth@1.0-service-qti.rc
 
 # Camera
-etc/camera/csidtg_chromatix.xml:vendor/etc/camera/csidtg_chromatix.xml
-lib/libdualcameraddm.so:vendor/lib/libdualcameraddm.so
-lib/libjni_dualcamera.so:vendor/lib/libjni_dualcamera.so
-lib/libmorpho_groupshot.so:vendor/lib/libmorpho_groupshot.so
-lib/libmorpho_memory_allocator.so:vendor/lib/libmorpho_memory_allocator.so
-lib/libmorpho_panorama.so:vendor/lib/libmorpho_panorama.so
-lib/libtrueportrait.so:vendor/lib/libtrueportrait.so
+lib/libtrueportrait.so
+lib64/libblurbuster.so
+lib64/libfiltergenerator.so
+lib64/libjni_blurbuster.so
+lib64/libjni_chromaflash.so
+lib64/libjni_clearsight.so
+lib64/libjni_dualcamera.so
+lib64/libjni_filtergenerator.so
+lib64/libjni_hazebuster.so
+lib64/libjni_makeupV2.so
+lib64/libjni_optizoom.so
+lib64/libjni_seestraight.so
+lib64/libjni_sharpshooter.so
+lib64/libjni_stillmore.so
+lib64/libjni_trueportrait.so
+lib64/libjni_truescanner_v2.so
+lib64/libjni_ubifocus.so
+lib64/libseestraight.so
+lib64/libtrueportrait.so
+lib64/libtruescanner.so
 vendor/lib/hw/camera.sdm660.so
-vendor/lib/libmorpho_easy_hdr.so
-vendor/lib/libmorpho_hdr_checker.so
-vendor/lib/libmorpho_video_refiner.so
-vendor/lib/libMiCameraHal.so
-vendor/lib/libmm-qcamera.so
-vendor/lib/libmmcamera_interface.so
-vendor/lib/libmmjpeg_interface.so
-vendor/lib/libqomx_core.so
 vendor/lib/lib_lowlight.so
+vendor/lib/lib_lowlight_dxo.so
 vendor/lib/libarcsoft_beauty_shot.so
 vendor/lib/libarcsoft_beautyshot.so
+vendor/lib/libarcsoft_dualcam_optical_zoom.so
+vendor/lib/libarcsoft_dualcam_optical_zoom_control.so
+vendor/lib/libarcsoft_dualcam_refocus.so
 vendor/lib/libchromaflash.so
 vendor/lib/libFaceGrade.so
 vendor/lib/libflash_pmic.so
 vendor/lib/libjpegdhw.so
 vendor/lib/libjpegdmahw.so
 vendor/lib/libjpegehw.so
-vendor/lib/libchromatix_csidtg_common.so
-vendor/lib/libchromatix_csidtg_cpp_preview.so
-vendor/lib/libchromatix_csidtg_postproc.so
-vendor/lib/libchromatix_csidtg_preview.so
-vendor/lib/libchromatix_csidtg_zsl_preview.so
+vendor/lib/libMiCameraHal.so
+vendor/lib/libmm-qcamera.so
 vendor/lib/libmmcamera2_c2d_module.so
 vendor/lib/libmmcamera2_cpp_module.so
 vendor/lib/libmmcamera2_frame_algorithm.so
@@ -105,6 +111,8 @@ vendor/lib/libmmcamera2_sensor_modules.so
 vendor/lib/libmmcamera2_stats_algorithm.so
 vendor/lib/libmmcamera2_stats_lib.so
 vendor/lib/libmmcamera2_stats_modules.so
+vendor/lib/libmmcamera_arcrtb_lib.so
+vendor/lib/libmmcamera_arcsoft_smoothtranstion_wrapper_lib.so
 vendor/lib/libmmcamera_chromaflash_lib.so
 vendor/lib/libmmcamera_csidtg.so
 vendor/lib/libmmcamera_dbg.so
@@ -118,9 +126,9 @@ vendor/lib/libmmcamera_faceproc2.so
 vendor/lib/libmmcamera_hdr_gb_lib.so
 vendor/lib/libmmcamera_hvx_add_constant.so
 vendor/lib/libmmcamera_hvx_grid_sum.so
-vendor/lib/libmmcamera_imglib_faceproc_adspstub.so
 vendor/lib/libmmcamera_imglib.so
-vendor/lib/libmmcamera_isp_luma_adaptation40.so
+vendor/lib/libmmcamera_imglib_faceproc_adspstub.so
+vendor/lib/libmmcamera_interface.so
 vendor/lib/libmmcamera_llvd.so
 vendor/lib/libmmcamera_optizoom_lib.so
 vendor/lib/libmmcamera_paaf_lib.so
@@ -129,7 +137,7 @@ vendor/lib/libmmcamera_pdafcamif.so
 vendor/lib/libmmcamera_ppbase_module.so
 vendor/lib/libmmcamera_ppeiscore.so
 vendor/lib/libmmcamera_quadracfa.so
-vendor/lib/libmmcamera_quadracfa.so
+vendor/lib/libmmcamera_sac_lib.so
 vendor/lib/libmmcamera_stillmore_lib.so
 vendor/lib/libmmcamera_sw2d_lib.so
 vendor/lib/libmmcamera_thread_services.so
@@ -139,18 +147,30 @@ vendor/lib/libmmcamera_trueportrait_lib.so
 vendor/lib/libmmcamera_tuning.so
 vendor/lib/libmmcamera_tuning_lookup.so
 vendor/lib/libmmjpeg.so
+vendor/lib/libmmjpeg_interface.so
 vendor/lib/libmmqjpeg_codec.so
 vendor/lib/libmmqjpegdma.so
+vendor/lib/libmorpho_easy_hdr.so
+vendor/lib/libmorpho_hdr_checker.so
+vendor/lib/libmorpho_video_refiner.so
 vendor/lib/libmpbase.so
 vendor/lib/liboptizoom.so
+vendor/lib/libqomx_core.so
 vendor/lib/libqomx_jpegdec.so
 vendor/lib/libqomx_jpegenc.so
 vendor/lib/libqomx_jpegenc_pipe.so
 vendor/lib/libremosaic_daemon.so
+vendor/lib/libsac.so
 vendor/lib/libseemore.so
 vendor/lib/libubifocus.so
+vendor/lib/libXMFD_AgeGender.so
 vendor/lib/libvideorefiner.so
 vendor/lib/libVDClearShot.so
+vendor/lib64/libchromaflash.so
+vendor/lib64/libdualcameraddm.so
+vendor/lib64/liboptizoom.so
+vendor/lib64/libseemore.so
+vendor/lib64/libubifocus.so
 
 # Camera firmware
 etc/firmware/cpp_firmware_v1_1_1.fw
@@ -172,14 +192,11 @@ etc/firmware/jason_bu63169_semco.prog
 
 # Camera ISP
 vendor/lib/libmmcamera_isp_abf48.so
-vendor/lib/libmmcamera_isp_abf48.so
 vendor/lib/libmmcamera_isp_aec_bg_stats47.so
 vendor/lib/libmmcamera_isp_bf_stats47.so
 vendor/lib/libmmcamera_isp_bg_stats46.so
 vendor/lib/libmmcamera_isp_bhist_stats44.so
 vendor/lib/libmmcamera_isp_black_level48.so
-vendor/lib/libmmcamera_isp_black_level48.so
-vendor/lib/libmmcamera_isp_bpc48.so
 vendor/lib/libmmcamera_isp_bpc48.so
 vendor/lib/libmmcamera_isp_cac47.so
 vendor/lib/libmmcamera_isp_chroma_enhan40.so
@@ -193,27 +210,22 @@ vendor/lib/libmmcamera_isp_color_xform_video46.so
 vendor/lib/libmmcamera_isp_color_xform_viewfinder46.so
 vendor/lib/libmmcamera_isp_cs_stats46.so
 vendor/lib/libmmcamera_isp_demosaic48.so
-vendor/lib/libmmcamera_isp_demosaic48.so
-vendor/lib/libmmcamera_isp_demux48.so
 vendor/lib/libmmcamera_isp_demux48.so
 vendor/lib/libmmcamera_isp_fovcrop_encoder46.so
 vendor/lib/libmmcamera_isp_fovcrop_video46.so
 vendor/lib/libmmcamera_isp_fovcrop_viewfinder46.so
 vendor/lib/libmmcamera_isp_gamma44.so
 vendor/lib/libmmcamera_isp_gic48.so
-vendor/lib/libmmcamera_isp_gic48.so
 vendor/lib/libmmcamera_isp_gtm46.so
 vendor/lib/libmmcamera_isp_hdr48.so
-vendor/lib/libmmcamera_isp_hdr48.so
 vendor/lib/libmmcamera_isp_hdr_be_stats46.so
-vendor/lib/libmmcamera_isp_hdr_bhist_stats44.so
 vendor/lib/libmmcamera_isp_hdr_bhist_stats44.so
 vendor/lib/libmmcamera_isp_ihist_stats46.so
 vendor/lib/libmmcamera_isp_linearization40.so
 vendor/lib/libmmcamera_isp_ltm47.so
+vendor/lib/libmmcamera_isp_luma_adaptation40.so
 vendor/lib/libmmcamera_isp_mce40.so
 vendor/lib/libmmcamera_isp_mesh_rolloff44.so
-vendor/lib/libmmcamera_isp_pdaf48.so
 vendor/lib/libmmcamera_isp_pdaf48.so
 vendor/lib/libmmcamera_isp_pedestal_correct46.so
 vendor/lib/libmmcamera_isp_rs_stats46.so
@@ -383,50 +395,38 @@ vendor/firmware/a512_zap.elf
 vendor/firmware/a512_zap.mdt
 
 # IMS
+-app/ims/ims.apk
+-app/uceShimService/uceShimService.apk
+etc/permissions/qti-vzw-ims-internal.xml
+lib64/libdiag_system.so
+lib64/lib-imscamera.so
+lib64/lib-imsvideocodec.so
+lib64/lib-imsvt.so
+lib64/lib-imsvtextutils.so
+lib64/lib-imsvtutils.so
+lib64/libimscamera_jni.so
+lib64/libimsmedia_jni.so
+lib64/librcc.so
+lib64/vendor.qti.imsrtpservice@1.0.so
 vendor/bin/ims_rtp_daemon
 vendor/bin/imsdatadaemon
 vendor/bin/imsqmidaemon
 vendor/bin/imsrcsd
-etc/permissions/com.qualcomm.qti.imscmservice.xml:vendor/etc/permissions/com.qualcomm.qti.imscmservice.xml|224f091964d59a33c82eab55cb1612cfdee99d25
-etc/permissions/com.qualcomm.qti.imscmservice_1_1.xml:vendor/etc/permissions/com.qualcomm.qti.imscmservice_1_1.xml|dcdd5e8236d433c2810cea30241423906e697782
-etc/permissions/qti-vzw-ims-internal.xml:vendor/etc/permissions/qti-vzw-ims-internal.xml
-framework/com.qualcomm.qti.imscmservice@1.0-java.jar:vendor/framework/com.qualcomm.qti.imscmservice@1.0-java.jar
-framework/com.qualcomm.qti.imscmservice@1.1-java.jar:vendor/framework/com.qualcomm.qti.imscmservice@1.1-java.jar
 vendor/framework/qti-vzw-ims-internal.jar
-lib/com.qualcomm.qti.imscmservice@1.0.so:vendor/lib/com.qualcomm.qti.imscmservice@1.0.so
-lib64/com.qualcomm.qti.imscmservice@1.0.so:vendor/lib64/com.qualcomm.qti.imscmservice@1.0.so
-lib64/com.qualcomm.qti.imscmservice@1.1.so:vendor/lib64/com.qualcomm.qti.imscmservice@1.1.so
-lib/vendor.qti.imsrtpservice@1.0.so:vendor/lib/vendor.qti.imsrtpservice@1.0.so
-lib64/vendor.qti.imsrtpservice@1.0.so:vendor/lib64/vendor.qti.imsrtpservice@1.0.so
+vendor/lib64/com.qualcomm.qti.imscmservice@1.0_vendor.so
 vendor/lib64/lib-dplmedia.so
+vendor/lib64/lib-imscmservice.so
 vendor/lib64/lib-imsdpl.so
 vendor/lib64/lib-imsqimf.so
 vendor/lib64/lib-imsrcs-v2.so
-vendor/lib64/lib-imscmservice.so
 vendor/lib64/lib-imsxml.so
 vendor/lib64/lib-rtpcommon.so
 vendor/lib64/lib-rtpcore.so
 vendor/lib64/lib-rtpdaemoninterface.so
 vendor/lib64/lib-rtpsl.so
--app/ims/ims.apk
--app/imssettings/imssettings.apk
-lib64/lib-imscamera.so:vendor/lib64/lib-imscamera.so
-lib64/lib-imsvideocodec.so:vendor/lib64/lib-imsvideocodec.so
-lib64/lib-imsvt.so:vendor/lib64/lib-imsvt.so
-lib64/lib-imsvtextutils.so:vendor/lib64/lib-imsvtextutils.so
-lib64/lib-imsvtutils.so:vendor/lib64/lib-imsvtutils.so
-lib64/libimsmedia_jni.so:vendor/lib64/libimsmedia_jni.so
-lib64/libimscamera_jni.so:vendor/lib64/libimscamera_jni.so
-lib/lib-imscamera.so:vendor/lib/lib-imscamera.so
-lib/lib-imsvideocodec.so:vendor/lib/lib-imsvideocodec.so
-lib/lib-imsvtextutils.so:vendor/lib/lib-imsvtextutils.so
-lib/lib-imsvtutils.so:vendor/lib/lib-imsvtutils.so
-lib/libimscamera_jni.so:vendor/lib/libimscamera_jni.so
-lib/libimsmedia_jni.so:vendor/lib/libimsmedia_jni.so
-lib/libmmrtpdecoder.so:vendor/lib/libmmrtpdecoder.so
-lib/libmmrtpencoder.so:vendor/lib/libmmrtpencoder.so
-lib64/libmmrtpdecoder.so:vendor/lib64/libmmrtpdecoder.so
-lib64/libmmrtpencoder.so:vendor/lib64/libmmrtpencoder.so
+vendor/lib64/lib-uceservice.so
+vendor/lib64/vendor.qti.imsrtpservice@1.0-service-Impl.so
+vendor/lib64/vendor.qti.imsrtpservice@1.0_vendor.so
 
 # Keystore
 vendor/lib64/hw/keystore.sdm660.so
@@ -444,6 +444,9 @@ vendor/lib/libvpplibrary.so
 vendor/lib/libOmxEvrcDec.so
 vendor/lib/libvpphvx.so
 vendor/lib/libvqzip.so
+
+# NFC
+vendor/firmware/libpn553_fw.so
 
 # Perf
 lib/libqti-perfd-client_system.so
@@ -722,10 +725,10 @@ vendor/lib64/libperfgluelayer.so
 
 bin/iwpriv
 bin/SoterProvisioningTool
-etc/camera/csidtg_camera.xml:vendor/etc/camera/csidtg_camera.xml
+etc/camera/csidtg_camera.xml
 etc/firmware/cpp_firmware_v1_5_1.fw
 etc/modem/Diag.cfg
-etc/permissions/com.fingerprints.extension.xml:vendor/etc/permissions/com.fingerprints.extension.xml
+etc/permissions/com.fingerprints.extension.xml
 -vendor/app/CABLService/CABLService.apk
 -vendor/app/PowerOffAlarm/PowerOffAlarm.apk
 -vendor/app/SVIService/SVIService.apk
@@ -1429,8 +1432,8 @@ vendor/lib/libchromatix_jason_s5k3m3_ofilm_cpp_hfr_90.so
 vendor/lib/libchromatix_jason_s5k3m3_ofilm_cpp_liveshot.so
 vendor/lib/libchromatix_jason_s5k3m3_ofilm_cpp_preview.so
 vendor/lib/libchromatix_jason_s5k3m3_ofilm_cpp_snapshot_downscale.so
-vendor/lib/libchromatix_jason_s5k3m3_ofilm_cpp_snapshot_upscale.so
 vendor/lib/libchromatix_jason_s5k3m3_ofilm_cpp_snapshot.so
+vendor/lib/libchromatix_jason_s5k3m3_ofilm_cpp_snapshot_upscale.so
 vendor/lib/libchromatix_jason_s5k3m3_ofilm_cpp_video_4k.so
 vendor/lib/libchromatix_jason_s5k3m3_ofilm_cpp_video.so
 vendor/lib/libchromatix_jason_s5k3m3_ofilm_default_preview_ad5816g.so
@@ -1462,8 +1465,8 @@ vendor/lib/libchromatix_jason_s5k3m3_semco_cpp_preview.so
 vendor/lib/libchromatix_jason_s5k3m3_semco_cpp_snapshot_downscale.so
 vendor/lib/libchromatix_jason_s5k3m3_semco_cpp_snapshot_hdr.so
 vendor/lib/libchromatix_jason_s5k3m3_semco_cpp_snapshot_hht.so
-vendor/lib/libchromatix_jason_s5k3m3_semco_cpp_snapshot_upscale.so
 vendor/lib/libchromatix_jason_s5k3m3_semco_cpp_snapshot.so
+vendor/lib/libchromatix_jason_s5k3m3_semco_cpp_snapshot_upscale.so
 vendor/lib/libchromatix_jason_s5k3m3_semco_cpp_video_4k.so
 vendor/lib/libchromatix_jason_s5k3m3_semco_cpp_video.so
 vendor/lib/libchromatix_jason_s5k3m3_semco_default_preview_ad5816g.so
@@ -1503,14 +1506,15 @@ vendor/lib/libchromatix_jason_s5k3p8sp_sunny_snapshot.so
 vendor/lib/libchromatix_jason_s5k3p8sp_sunny_video.so
 
 # Camera configs
-etc/camera/camera_config.xml:vendor/etc/camera/camera_config.xml
-etc/camera/jason_imx386_ofilm_chromatix.xml:vendor/etc/camera/jason_imx386_ofilm_chromatix.xml
-etc/camera/jason_imx386_semco_chromatix.xml:vendor/etc/camera/jason_imx386_semco_chromatix.xml
-etc/camera/jason_s5k3m3_ofilm_chromatix.xml:vendor/etc/camera/jason_s5k3m3_ofilm_chromatix.xml
-etc/camera/jason_s5k3m3_semco_chromatix.xml:vendor/etc/camera/jason_s5k3m3_semco_chromatix.xml
-etc/camera/jason_s5k3p8sp_sunny_chromatix.xml:vendor/etc/camera/jason_s5k3p8sp_sunny_chromatix.xml
+etc/camera/camera_config.xml
+etc/camera/jason_imx386_ofilm_chromatix.xml
+etc/camera/jason_imx386_semco_chromatix.xml
+etc/camera/jason_s5k3m3_ofilm_chromatix.xml
+etc/camera/jason_s5k3m3_semco_chromatix.xml
+etc/camera/jason_s5k3p8sp_sunny_chromatix.xml
 
 # Camera eeproms
+vendor/lib/libSonyIMX386PdafLibrary.so
 vendor/lib/libmmcamera_jason_imx386_ofilm_eeprom.so
 vendor/lib/libmmcamera_jason_imx386_ofilm.so
 vendor/lib/libmmcamera_jason_imx386_semco_eeprom.so
