@@ -88,6 +88,7 @@ vendor/lib/libarcsoft_dualcam_optical_zoom.so
 vendor/lib/libarcsoft_dualcam_optical_zoom_control.so
 vendor/lib/libarcsoft_dualcam_refocus.so
 vendor/lib/libchromaflash.so
+vendor/lib/libedge_smooth_hvx_stub.so
 vendor/lib/libFaceGrade.so
 vendor/lib/libflash_pmic.so
 vendor/lib/libjpegdhw.so
@@ -154,14 +155,18 @@ vendor/lib/libmorpho_easy_hdr.so
 vendor/lib/libmorpho_hdr_checker.so
 vendor/lib/libmorpho_video_refiner.so
 vendor/lib/libmpbase.so
+vendor/lib/libois_jason_bu63169_ofilm.so
+vendor/lib/libois_jason_bu63169_semco.so
 vendor/lib/liboptizoom.so
 vendor/lib/libqomx_core.so
 vendor/lib/libqomx_jpegdec.so
 vendor/lib/libqomx_jpegenc.so
 vendor/lib/libqomx_jpegenc_pipe.so
+vendor/lib/libremosaiclib.so
 vendor/lib/libremosaic_daemon.so
 vendor/lib/libsac.so
 vendor/lib/libseemore.so
+vendor/lib/libStereoRectification.so
 vendor/lib/libubifocus.so
 vendor/lib/libXMFD_AgeGender.so
 vendor/lib/libvideorefiner.so
@@ -169,6 +174,7 @@ vendor/lib/libVDClearShot.so
 vendor/lib64/libchromaflash.so
 vendor/lib64/libdualcameraddm.so
 vendor/lib64/liboptizoom.so
+vendor/lib64/libremosaiclib.so
 vendor/lib64/libseemore.so
 vendor/lib64/libubifocus.so
 
@@ -424,6 +430,7 @@ vendor/lib64/lib-rtpcommon.so
 vendor/lib64/lib-rtpcore.so
 vendor/lib64/lib-rtpdaemoninterface.so
 vendor/lib64/lib-rtpsl.so
+vendor/lib64/lib-siputility.so
 vendor/lib64/lib-uceservice.so
 vendor/lib64/vendor.qti.imsrtpservice@1.0-service-Impl.so
 vendor/lib64/vendor.qti.imsrtpservice@1.0_vendor.so
@@ -549,12 +556,20 @@ vendor/radio/qcril_database/qcril.db
 # Sensors
 vendor/bin/sensors.qcom
 vendor/lib64/hw/activity_recognition.sdm660.so
+vendor/lib64/libsensor_cal.so
+vendor/lib64/libsensor_calJNI.so
 vendor/lib64/libsensor1.so
 vendor/lib64/libsensor_reg.so
+vendor/lib64/libsensor_test.so
+vendor/lib64/libsensor_user_cal.so
 vendor/lib64/sensors.ssc.so
 vendor/lib/hw/activity_recognition.sdm660.so
+vendor/lib/libsensor_cal.so
+vendor/lib/libsensor_calJNI.so
 vendor/lib/libsensor1.so
 vendor/lib/libsensor_reg.so
+vendor/lib/libsensor_test.so
+vendor/lib/libsensor_user_cal.so
 vendor/lib/sensors.ssc.so
 
 # Thermal
