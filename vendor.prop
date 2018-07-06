@@ -87,6 +87,10 @@ persist.device.type=omt
 persist.activate_mbn.enabled=false
 ro.regionalization.support=true
 
+#fingerprint vendor set
+ro.hardware.fp.fpc=true
+ro.hardware.fp.goodix=true
+
 #system property determining camera to be used for a Video call
 persist.vendor.qti.telephony.vt_cam_interface=1
 persist.dbg.vt_avail_ovr=1
