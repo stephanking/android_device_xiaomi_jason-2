@@ -1591,5 +1591,3 @@ lib64/fm_helium.so
 #Ant
 -lib64/libantradio.so
 -lib/libantradio.so
-
-vendor/lib/modules/qca_cld3/qca_cld3_wlan.ko
