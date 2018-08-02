@@ -38,9 +38,4 @@
         <ctl name="RX1 Digital Volume" value="74" />
         <ctl name="RX2 Digital Volume" value="74" />
     </path>
-    <path name="voice-handset">
-        <path name="handset" />
-        <ctl name="RX4 Digital Volume" value="75" />
-        <ctl name="COMP1 Switch" value="0" />
-    </path>
 </mixer>
