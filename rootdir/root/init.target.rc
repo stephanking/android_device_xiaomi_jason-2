@@ -117,7 +117,9 @@ on boot
     chown system system /persist/speccfg/partition
 
 # Touchscreen
-    chown system system /sys/class/input/input2/wake_gesture
+    chown system system /sys/bus/i2c/devices/4-0020/input/input1/wake_gesture
+    chown system system /sys/bus/i2c/devices/4-0020/input/input1/0dbutton
+    chown system system /sys/bus/i2c/devices/4-0020/input/input1/reversed_keys
 
    setprop wlan.driver.status "ok"
 
