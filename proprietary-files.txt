@@ -575,6 +575,11 @@ vendor/lib/libsensor_user_cal.so
 vendor/lib/sensors.ssc.so
 
 # Thermal
+vendor/etc/thermal-engine.conf
+vendor/etc/thermal-engine-sdm660.conf
+vendor/etc/thermal-engine-sdm660-high.conf
+vendor/etc/thermal-engine-sdm660-map.conf
+vendor/etc/thermal-engine-sdm660-nolimits.conf
 vendor/bin/msm_irqbalance
 vendor/bin/thermal-engine
 -vendor/lib64/libthermalclient.so
@@ -1581,9 +1586,6 @@ vendor/etc/init/android.hardware.biometrics.fingerprint@2.1-service.rc
 # Sensors
 vendor/etc/sensors/hals.conf
 vendor/etc/sensors/sensor_def_qcomdev.conf
-
-# Thermal
-vendor/etc/thermal-engine.conf
 
 # FM
 bin/fmconfig
