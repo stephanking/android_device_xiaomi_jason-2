@@ -40,7 +40,7 @@ TARGET_VENDOR_DEVICE_NAME := jason
 PRODUCT_BUILD_PROP_OVERRIDES += TARGET_DEVICE=jason PRODUCT_NAME=jason
 PRODUCT_GMS_CLIENTID_BASE := android-xiaomi
 PRODUCT_BUILD_PROP_OVERRIDES += \
-    PRIVATE_BUILD_DESC="jason-user 8.1.0 OPM1.171019.019 8.8.3 release-keys"
+    PRIVATE_BUILD_DESC="jason-user 8.1.0 OPM1.171019.019 8.8.9 release-keys"
 
 # Set BUILD_FINGERPRINT variable to be picked up by both system and vendor build.prop
-BUILD_FINGERPRINT := "xiaomi/jason/jason:8.1.0/OPM1.171019.019/8.8.3:user/release-keys"
+BUILD_FINGERPRINT := "xiaomi/jason/jason:8.1.0/OPM1.171019.019/8.8.9:user/release-keys"
