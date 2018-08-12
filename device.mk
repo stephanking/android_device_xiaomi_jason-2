@@ -272,6 +272,7 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     FM2 \
     libqcomfm_jni \
+    init.qti.fm.sh \
     qcom.fmradio
 
 # Ramdisk
@@ -295,7 +296,6 @@ PRODUCT_PACKAGES += \
     init.qcom.syspart_fixup.sh \
     init.qcom.usb.sh \
     init.qcom.wifi.sh \
-    init.qti.fm.sh \
     init.qti.ims.sh \
     init.goodix.sh \
     ueventd.rc
