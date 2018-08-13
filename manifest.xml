@@ -36,24 +36,6 @@
         </interface>
     </hal>
     <hal format="hidl">
-        <name>android.hardware.boot</name>
-        <transport>hwbinder</transport>
-        <version>1.0</version>
-        <interface>
-            <name>IBootControl</name>
-            <instance>default</instance>
-        </interface>
-    </hal>
-    <hal format="hidl">
-        <name>android.hardware.broadcastradio</name>
-        <transport>hwbinder</transport>
-        <version>1.0</version>
-        <interface>
-            <name>IBroadcastRadioFactory</name>
-            <instance>default</instance>
-        </interface>
-    </hal>
-    <hal format="hidl">
         <name>android.hardware.camera.provider</name>
         <transport>hwbinder</transport>
         <version>2.4</version>
@@ -461,7 +443,7 @@
     <hal format="hidl">
         <name>vendor.display.config</name>
         <transport>hwbinder</transport>
-        <version>1.1</version>
+        <version>1.0</version>
         <interface>
             <name>IDisplayConfig</name>
             <instance>default</instance>
@@ -477,7 +459,7 @@
         </interface>
     </hal>
     <hal format="hidl">
-        <name>vendor.goodix.hardware.fingerprint</name>
+        <name>vendor.goodix.hardware.fingerprintextension</name>
         <transport>hwbinder</transport>
         <version>1.0</version>
         <interface>
@@ -706,21 +688,30 @@
         </interface>
     </hal>
     <hal format="hidl">
-        <name>vendor.qti.hardware.wifi.keystore</name>
-        <transport>hwbinder</transport>
-        <version>1.0</version>
-        <interface>
-            <name>IKeystoreExt</name>
-            <instance>default</instance>
-        </interface>
-    </hal>
-    <hal format="hidl">
         <name>vendor.qti.imsrtpservice</name>
         <transport>hwbinder</transport>
         <version>1.0</version>
         <interface>
             <name>IRTPService</name>
             <instance>imsrtpservice</instance>
+        </interface>
+    </hal>
+    <hal format="hidl">
+        <name>vendor.xiaomi.hardware.citsensorservice</name>
+        <transport>hwbinder</transport>
+        <version>1.0</version>
+        <interface>
+            <name>ICitSensorService</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+    <hal format="hidl">
+        <name>vendor.xiaomi.hardware.displayfeature</name>
+        <transport>hwbinder</transport>
+        <version>1.0</version>
+        <interface>
+            <name>IDisplayFeature</name>
+            <instance>default</instance>
         </interface>
     </hal>
     <hal format="hidl">
@@ -747,6 +738,15 @@
         <version>1.0</version>
         <interface>
             <name>IMTService</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+    <hal format="hidl">
+        <name>vendor.xiaomi.hardware.nfcpay</name>
+        <transport>hwbinder</transport>
+        <version>1.0</version>
+        <interface>
+            <name>INfcPay</name>
             <instance>default</instance>
         </interface>
     </hal>
