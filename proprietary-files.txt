@@ -582,9 +582,11 @@ vendor/etc/thermal-engine-sdm660-map.conf
 vendor/etc/thermal-engine-sdm660-nolimits.conf
 vendor/bin/msm_irqbalance
 vendor/bin/thermal-engine
+vendor/lib/libthermalfeature.so
+-vendor/lib/libthermalclient.so
+vendor/lib64/libthermalfeature.so
 -vendor/lib64/libthermalclient.so
 vendor/lib64/libthermalioctl.so
--vendor/lib/libthermalclient.so
 
 # Time services
 -vendor/app/TimeService/TimeService.apk
@@ -911,7 +913,6 @@ vendor/lib/hw/android.hardware.bluetooth@1.0-impl-qti.so
 vendor/lib/hw/audio.primary.sdm660.so
 vendor/lib/hw/com.qualcomm.qti.ant@1.0-impl.so
 vendor/lib/hw/com.qualcomm.qti.bluetooth_audio@1.0-impl.so
-vendor/lib/hw/thermal.sdm660.so
 vendor/lib/lib-dplmedia.so
 vendor/lib/lib-imscmservice.so
 vendor/lib/lib-imsdpl.so
@@ -1096,7 +1097,6 @@ vendor/lib64/com.qualcomm.qti.wifidisplayhal@1.0-halimpl.so
 vendor/lib64/com.qualcomm.qti.wifidisplayhal@1.0-impl.so
 vendor/lib64/hw/com.qualcomm.qti.ant@1.0-impl.so
 vendor/lib64/hw/com.qualcomm.qti.bluetooth_audio@1.0-impl.so
-vendor/lib64/hw/thermal.sdm660.so
 vendor/lib64/lib-uceservice.so
 vendor/lib64/libAlacSwDec.so
 vendor/lib64/libApeSwDec.so

@@ -375,6 +375,10 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
     $(call find-copy-subdir-files,*,device/xiaomi/jason/prebuilt/system,system)
 
+# Thermal
+PRODUCT_PACKAGES += \
+    thermal.sdm660
+
 $(call inherit-product, device/xiaomi/jason/treble.mk)
 # Call the proprietary setup
 $(call inherit-product, vendor/xiaomi/jason/jason-vendor.mk)
