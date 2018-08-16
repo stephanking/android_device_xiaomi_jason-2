@@ -805,7 +805,6 @@ vendor/bin/wdsdaemon
 vendor/bin/wifidisplayhalservice
 vendor/bin/xtra-daemon
 vendor/etc/apdr.conf
-vendor/etc/appboosts.xml
 vendor/etc/audio_tuning_mixer.txt
 vendor/etc/camera/MIUI_Time.ttf
 vendor/etc/camera/Miui-Light.ttf
@@ -847,7 +846,6 @@ vendor/etc/cne/wqeclient/VZW/VZW_profile6.xml
 vendor/etc/drc/drc_cfg_5.1.txt
 vendor/etc/drc/drc_cfg_AZ.txt
 vendor/etc/ftm_test_config
-vendor/etc/gamedwhitelist.xml
 vendor/etc/graphite_ipc_platform_info.xml
 vendor/etc/hbtp/hbtpcfg.dat
 vendor/etc/hbtp/hbtpcfg2.dat
