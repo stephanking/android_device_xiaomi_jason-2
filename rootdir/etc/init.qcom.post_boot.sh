@@ -27,6 +27,199 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
+function 8953_sched_dcvs_eas()
+{
+    #governor settings
+    echo 1 > /sys/devices/system/cpu/cpu0/online
+    echo "schedutil" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+    echo 0 > /sys/devices/system/cpu/cpufreq/schedutil/rate_limit_us
+    #set the hispeed_freq
+    echo 1401600 > /sys/devices/system/cpu/cpufreq/schedutil/hispeed_freq
+    #default value for hispeed_load is 90, for 8953 and sdm450 it should be 85
+    echo 85 > /sys/devices/system/cpu/cpufreq/schedutil/hispeed_load
+}
+
+function 8917_sched_dcvs_eas()
+{
+    #governor settings
+    echo 1 > /sys/devices/system/cpu/cpu0/online
+    echo "schedutil" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+    echo 0 > /sys/devices/system/cpu/cpufreq/schedutil/rate_limit_us
+    #set the hispeed_freq
+    echo 1094400 > /sys/devices/system/cpu/cpufreq/schedutil/hispeed_freq
+    #default value for hispeed_load is 90, for 8917 it should be 85
+    echo 85 > /sys/devices/system/cpu/cpufreq/schedutil/hispeed_load
+}
+
+function 8937_sched_dcvs_eas()
+{
+    # enable governor for perf cluster
+    echo 1 > /sys/devices/system/cpu/cpu0/online
+    echo "schedutil" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+    echo 0 > /sys/devices/system/cpu/cpu0/cpufreq/schedutil/rate_limit_us
+    #set the hispeed_freq
+    echo 1094400 > /sys/devices/system/cpu/cpu0/cpufreq/schedutil/hispeed_freq
+    #default value for hispeed_load is 90, for 8937 it should be 85
+    echo 85 > /sys/devices/system/cpu/cpu0/cpufreq/schedutil/hispeed_load
+    ## enable governor for power cluster
+    echo 1 > /sys/devices/system/cpu/cpu4/online
+    echo "schedutil" > /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor
+    echo 0 > /sys/devices/system/cpu/cpu4/cpufreq/schedutil/rate_limit_us
+    #set the hispeed_freq
+    echo 768000 > /sys/devices/system/cpu/cpu4/cpufreq/schedutil/hispeed_freq
+    #default value for hispeed_load is 90, for 8937 it should be 85
+    echo 85 > /sys/devices/system/cpu/cpu4/cpufreq/schedutil/hispeed_load
+
+}
+
+function 8953_sched_dcvs_hmp()
+{
+    #scheduler settings
+    echo 3 > /proc/sys/kernel/sched_window_stats_policy
+    echo 3 > /proc/sys/kernel/sched_ravg_hist_size
+    #task packing settings
+    echo 0 > /sys/devices/system/cpu/cpu0/sched_static_cpu_pwr_cost
+    echo 0 > /sys/devices/system/cpu/cpu1/sched_static_cpu_pwr_cost
+    echo 0 > /sys/devices/system/cpu/cpu2/sched_static_cpu_pwr_cost
+    echo 0 > /sys/devices/system/cpu/cpu3/sched_static_cpu_pwr_cost
+    echo 0 > /sys/devices/system/cpu/cpu4/sched_static_cpu_pwr_cost
+    echo 0 > /sys/devices/system/cpu/cpu5/sched_static_cpu_pwr_cost
+    echo 0 > /sys/devices/system/cpu/cpu6/sched_static_cpu_pwr_cost
+    echo 0 > /sys/devices/system/cpu/cpu7/sched_static_cpu_pwr_cost
+    # spill load is set to 100% by default in the kernel
+    echo 3 > /proc/sys/kernel/sched_spill_nr_run
+    # Apply inter-cluster load balancer restrictions
+    echo 1 > /proc/sys/kernel/sched_restrict_cluster_spill
+    # set sync wakee policy tunable
+    echo 1 > /proc/sys/kernel/sched_prefer_sync_wakee_to_waker
+
+    #governor settings
+    echo 1 > /sys/devices/system/cpu/cpu0/online
+    echo "interactive" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+    echo "19000 1401600:39000" > /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay
+    echo 85 > /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load
+    echo 20000 > /sys/devices/system/cpu/cpufreq/interactive/timer_rate
+    echo 1401600 > /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq
+    echo 0 > /sys/devices/system/cpu/cpufreq/interactive/io_is_busy
+    echo "85 1401600:80" > /sys/devices/system/cpu/cpufreq/interactive/target_loads
+    echo 39000 > /sys/devices/system/cpu/cpufreq/interactive/min_sample_time
+    echo 40000 > /sys/devices/system/cpu/cpufreq/interactive/sampling_down_factor
+    echo 19 > /proc/sys/kernel/sched_upmigrate_min_nice
+    # Enable sched guided freq control
+    echo 1 > /sys/devices/system/cpu/cpufreq/interactive/use_sched_load
+    echo 1 > /sys/devices/system/cpu/cpufreq/interactive/use_migration_notif
+    echo 200000 > /proc/sys/kernel/sched_freq_inc_notify
+    echo 200000 > /proc/sys/kernel/sched_freq_dec_notify
+
+}
+
+function 8917_sched_dcvs_hmp()
+{
+    # HMP scheduler settings
+    echo 3 > /proc/sys/kernel/sched_window_stats_policy
+    echo 3 > /proc/sys/kernel/sched_ravg_hist_size
+    echo 1 > /proc/sys/kernel/sched_restrict_tasks_spread
+    # HMP Task packing settings
+    echo 20 > /proc/sys/kernel/sched_small_task
+    echo 30 > /sys/devices/system/cpu/cpu0/sched_mostly_idle_load
+    echo 30 > /sys/devices/system/cpu/cpu1/sched_mostly_idle_load
+    echo 30 > /sys/devices/system/cpu/cpu2/sched_mostly_idle_load
+    echo 30 > /sys/devices/system/cpu/cpu3/sched_mostly_idle_load
+
+    echo 3 > /sys/devices/system/cpu/cpu0/sched_mostly_idle_nr_run
+    echo 3 > /sys/devices/system/cpu/cpu1/sched_mostly_idle_nr_run
+    echo 3 > /sys/devices/system/cpu/cpu2/sched_mostly_idle_nr_run
+    echo 3 > /sys/devices/system/cpu/cpu3/sched_mostly_idle_nr_run
+
+    echo 0 > /sys/devices/system/cpu/cpu0/sched_prefer_idle
+    echo 0 > /sys/devices/system/cpu/cpu1/sched_prefer_idle
+    echo 0 > /sys/devices/system/cpu/cpu2/sched_prefer_idle
+    echo 0 > /sys/devices/system/cpu/cpu3/sched_prefer_idle
+
+    echo 1 > /sys/devices/system/cpu/cpu0/online
+    echo "interactive" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+    echo "19000 1094400:39000" > /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay
+    echo 85 > /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load
+    echo 20000 > /sys/devices/system/cpu/cpufreq/interactive/timer_rate
+    echo 1094400 > /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq
+    echo 0 > /sys/devices/system/cpu/cpufreq/interactive/io_is_busy
+    echo "1 960000:85 1094400:90" > /sys/devices/system/cpu/cpufreq/interactive/target_loads
+    echo 40000 > /sys/devices/system/cpu/cpufreq/interactive/min_sample_time
+    echo 40000 > /sys/devices/system/cpu/cpufreq/interactive/sampling_down_factor
+
+    # Enable sched guided freq control
+    echo 1 > /sys/devices/system/cpu/cpufreq/interactive/use_sched_load
+    echo 1 > /sys/devices/system/cpu/cpufreq/interactive/use_migration_notif
+    echo 50000 > /proc/sys/kernel/sched_freq_inc_notify
+    echo 50000 > /proc/sys/kernel/sched_freq_dec_notify
+}
+
+function 8937_sched_dcvs_hmp()
+{
+    # HMP scheduler settings
+    echo 3 > /proc/sys/kernel/sched_window_stats_policy
+    echo 3 > /proc/sys/kernel/sched_ravg_hist_size
+    # HMP Task packing settings
+    echo 20 > /proc/sys/kernel/sched_small_task
+    echo 30 > /sys/devices/system/cpu/cpu0/sched_mostly_idle_load
+    echo 30 > /sys/devices/system/cpu/cpu1/sched_mostly_idle_load
+    echo 30 > /sys/devices/system/cpu/cpu2/sched_mostly_idle_load
+    echo 30 > /sys/devices/system/cpu/cpu3/sched_mostly_idle_load
+    echo 30 > /sys/devices/system/cpu/cpu4/sched_mostly_idle_load
+    echo 30 > /sys/devices/system/cpu/cpu5/sched_mostly_idle_load
+    echo 30 > /sys/devices/system/cpu/cpu6/sched_mostly_idle_load
+    echo 30 > /sys/devices/system/cpu/cpu7/sched_mostly_idle_load
+
+    echo 3 > /sys/devices/system/cpu/cpu0/sched_mostly_idle_nr_run
+    echo 3 > /sys/devices/system/cpu/cpu1/sched_mostly_idle_nr_run
+    echo 3 > /sys/devices/system/cpu/cpu2/sched_mostly_idle_nr_run
+    echo 3 > /sys/devices/system/cpu/cpu3/sched_mostly_idle_nr_run
+    echo 3 > /sys/devices/system/cpu/cpu4/sched_mostly_idle_nr_run
+    echo 3 > /sys/devices/system/cpu/cpu5/sched_mostly_idle_nr_run
+    echo 3 > /sys/devices/system/cpu/cpu6/sched_mostly_idle_nr_run
+    echo 3 > /sys/devices/system/cpu/cpu7/sched_mostly_idle_nr_run
+
+    echo 0 > /sys/devices/system/cpu/cpu0/sched_prefer_idle
+    echo 0 > /sys/devices/system/cpu/cpu1/sched_prefer_idle
+    echo 0 > /sys/devices/system/cpu/cpu2/sched_prefer_idle
+    echo 0 > /sys/devices/system/cpu/cpu3/sched_prefer_idle
+    echo 0 > /sys/devices/system/cpu/cpu4/sched_prefer_idle
+    echo 0 > /sys/devices/system/cpu/cpu5/sched_prefer_idle
+    echo 0 > /sys/devices/system/cpu/cpu6/sched_prefer_idle
+    echo 0 > /sys/devices/system/cpu/cpu7/sched_prefer_idle
+    # enable governor for perf cluster
+    echo 1 > /sys/devices/system/cpu/cpu0/online
+    echo "interactive" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+    echo "19000 1094400:39000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay
+    echo 85 > /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load
+    echo 20000 > /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate
+    echo 1094400 > /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq
+    echo 0 > /sys/devices/system/cpu/cpu0/cpufreq/interactive/io_is_busy
+    echo "1 960000:85 1094400:90 1344000:80" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads
+    echo 40000 > /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time
+    echo 40000 > /sys/devices/system/cpu/cpu0/cpufreq/interactive/sampling_down_factor
+
+    # enable governor for power cluster
+    echo 1 > /sys/devices/system/cpu/cpu4/online
+    echo "interactive" > /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor
+    echo 39000 > /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay
+    echo 90 > /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load
+    echo 20000 > /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate
+    echo 768000 > /sys/devices/system/cpu/cpu4/cpufreq/interactive/hispeed_freq
+    echo 0 > /sys/devices/system/cpu/cpu4/cpufreq/interactive/io_is_busy
+    echo "1 768000:90" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads
+    echo 40000 > /sys/devices/system/cpu/cpu4/cpufreq/interactive/min_sample_time
+    echo 40000 > /sys/devices/system/cpu/cpu4/cpufreq/interactive/sampling_down_factor
+
+    # Enable sched guided freq control
+    echo 1 > /sys/devices/system/cpu/cpu0/cpufreq/interactive/use_sched_load
+    echo 1 > /sys/devices/system/cpu/cpu0/cpufreq/interactive/use_migration_notif
+    echo 1 > /sys/devices/system/cpu/cpu4/cpufreq/interactive/use_sched_load
+    echo 1 > /sys/devices/system/cpu/cpu4/cpufreq/interactive/use_migration_notif
+    echo 50000 > /proc/sys/kernel/sched_freq_inc_notify
+    echo 50000 > /proc/sys/kernel/sched_freq_dec_notify
+
+}
 target=`getprop ro.board.platform`
 
 function configure_zram_parameters() {
@@ -109,7 +302,11 @@ else
     if [ "$arch_type" == "aarch64" ] && [ $MemTotal -gt 2097152 ]; then
         echo 10 > /sys/module/process_reclaim/parameters/pressure_min
         echo 1024 > /sys/module/process_reclaim/parameters/per_swap_size
-        echo "18432,23040,27648,32256,55296,80640" > /sys/module/lowmemorykiller/parameters/minfree
+        if [ $MemTotal -gt 5505024 ]; then
+            echo "18432,23040,27648,32256,85296,120640" > /sys/module/lowmemorykiller/parameters/minfree
+        else
+            echo "18432,23040,27648,32256,55296,80640" > /sys/module/lowmemorykiller/parameters/minfree
+        fi
         echo 81250 > /sys/module/lowmemorykiller/parameters/vmpressure_file_min
     elif [ "$arch_type" == "aarch64" ] && [ $MemTotal -gt 1048576 ]; then
         echo 10 > /sys/module/process_reclaim/parameters/pressure_min
@@ -123,10 +320,11 @@ else
         echo 81250 > /sys/module/lowmemorykiller/parameters/vmpressure_file_min
     else
         if [ $MemTotal -le 1048576 ] && [ "$low_ram" == "true" ]; then
-            # Disable KLMK, ALMK & PPR for Go devices
+            # Disable KLMK, ALMK, PPR & Core Control for Go devices
             echo 0 > /sys/module/lowmemorykiller/parameters/enable_lmk
             echo 0 > /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk
             echo 0 > /sys/module/process_reclaim/parameters/enable_process_reclaim
+            echo 1 > /sys/devices/system/cpu/cpu0/core_ctl/disable
         else
             echo 50 > /sys/module/process_reclaim/parameters/pressure_min
             echo 512 > /sys/module/process_reclaim/parameters/per_swap_size
@@ -1365,8 +1563,12 @@ case "$target" in
             hw_platform=`cat /sys/devices/system/soc/soc0/hw_platform`
         fi
 
+        if [ -f /sys/devices/soc0/platform_subtype_id ]; then
+            platform_subtype_id=`cat /sys/devices/soc0/platform_subtype_id`
+        fi
+
         case "$soc_id" in
-            "293" | "304" | "338" | "351" )
+            "293" | "304" | "338" | "351" | "349" | "350")
 
                 # Start Host based Touch processing
                 case "$hw_platform" in
@@ -1380,28 +1582,26 @@ case "$target" in
                         ;;
                 esac
 
-                #scheduler settings
-                echo 3 > /proc/sys/kernel/sched_window_stats_policy
-                echo 3 > /proc/sys/kernel/sched_ravg_hist_size
-                #task packing settings
-                echo 0 > /sys/devices/system/cpu/cpu0/sched_static_cpu_pwr_cost
-                echo 0 > /sys/devices/system/cpu/cpu1/sched_static_cpu_pwr_cost
-                echo 0 > /sys/devices/system/cpu/cpu2/sched_static_cpu_pwr_cost
-                echo 0 > /sys/devices/system/cpu/cpu3/sched_static_cpu_pwr_cost
-                echo 0 > /sys/devices/system/cpu/cpu4/sched_static_cpu_pwr_cost
-                echo 0 > /sys/devices/system/cpu/cpu5/sched_static_cpu_pwr_cost
-                echo 0 > /sys/devices/system/cpu/cpu6/sched_static_cpu_pwr_cost
-                echo 0 > /sys/devices/system/cpu/cpu7/sched_static_cpu_pwr_cost
+                if [ $soc_id -eq "338" ]; then
+                    case "$hw_platform" in
+                        "QRD" )
+                            if [ $platform_subtype_id -eq "1" ]; then
+                               start_hbtp
+                            fi
+                            ;;
+                    esac
+                fi
+
+                case "$soc_id" in
+                    "349" | "350" )
+                        if [ $hw_platform -eq "QRD" ]; then
+                            start_hbtp
+                        fi
+                        ;;
+                esac
 
                 #init task load, restrict wakeups to preferred cluster
                 echo 15 > /proc/sys/kernel/sched_init_task_load
-                # spill load is set to 100% by default in the kernel
-                echo 3 > /proc/sys/kernel/sched_spill_nr_run
-                # Apply inter-cluster load balancer restrictions
-                echo 1 > /proc/sys/kernel/sched_restrict_cluster_spill
-
-                # set sync wakee policy tunable
-                echo 1 > /proc/sys/kernel/sched_prefer_sync_wakee_to_waker
 
                 for devfreq_gov in /sys/class/devfreq/qcom,mincpubw*/governor
                 do
@@ -1506,19 +1706,17 @@ case "$target" in
                     echo -n enable > $mode
                 done
 
-                #governor settings
-                echo 1 > /sys/devices/system/cpu/cpu0/online
-                echo "interactive" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
-                echo "19000 1401600:39000" > /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay
-                echo 85 > /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load
-                echo 20000 > /sys/devices/system/cpu/cpufreq/interactive/timer_rate
-                echo 1401600 > /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq
-                echo 0 > /sys/devices/system/cpu/cpufreq/interactive/io_is_busy
-                echo "85 1401600:80" > /sys/devices/system/cpu/cpufreq/interactive/target_loads
-                echo 39000 > /sys/devices/system/cpu/cpufreq/interactive/min_sample_time
-                echo 40000 > /sys/devices/system/cpu/cpufreq/interactive/sampling_down_factor
+                #if the kernel version >=4.9,use the schedutil governor
+                KernelVersionStr=`cat /proc/sys/kernel/osrelease`
+                KernelVersionS=${KernelVersionStr:2:2}
+                KernelVersionA=${KernelVersionStr:0:1}
+                KernelVersionB=${KernelVersionS%.*}
+                if [ $KernelVersionA -ge 4 ] && [ $KernelVersionB -ge 9 ]; then
+                    8953_sched_dcvs_eas
+                else
+                    8953_sched_dcvs_hmp
+                fi
                 echo 652800 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
-
                 # re-enable thermal & BCL core_control now
                 echo 1 > /sys/module/msm_thermal/core_control/enabled
                 for mode in /sys/devices/soc.0/qcom,bcl.*/mode
@@ -1553,13 +1751,6 @@ case "$target" in
                 # SMP scheduler
                 echo 85 > /proc/sys/kernel/sched_upmigrate
                 echo 85 > /proc/sys/kernel/sched_downmigrate
-                echo 19 > /proc/sys/kernel/sched_upmigrate_min_nice
-
-                # Enable sched guided freq control
-                echo 1 > /sys/devices/system/cpu/cpufreq/interactive/use_sched_load
-                echo 1 > /sys/devices/system/cpu/cpufreq/interactive/use_migration_notif
-                echo 200000 > /proc/sys/kernel/sched_freq_inc_notify
-                echo 200000 > /proc/sys/kernel/sched_freq_dec_notify
 
                 # Set Memory parameters
                 configure_memory_parameters
@@ -1605,31 +1796,10 @@ case "$target" in
                   esac
                 # Apply Scheduler and Governor settings for 8917 / 8920
 
-                # HMP scheduler settings
-                echo 3 > /proc/sys/kernel/sched_window_stats_policy
-                echo 3 > /proc/sys/kernel/sched_ravg_hist_size
                 echo 20000000 > /proc/sys/kernel/sched_ravg_window
-                echo 1 > /proc/sys/kernel/sched_restrict_tasks_spread
 
                 #disable sched_boost in 8917
                 echo 0 > /proc/sys/kernel/sched_boost
-
-                # HMP Task packing settings
-                echo 20 > /proc/sys/kernel/sched_small_task
-                echo 30 > /sys/devices/system/cpu/cpu0/sched_mostly_idle_load
-                echo 30 > /sys/devices/system/cpu/cpu1/sched_mostly_idle_load
-                echo 30 > /sys/devices/system/cpu/cpu2/sched_mostly_idle_load
-                echo 30 > /sys/devices/system/cpu/cpu3/sched_mostly_idle_load
-
-                echo 3 > /sys/devices/system/cpu/cpu0/sched_mostly_idle_nr_run
-                echo 3 > /sys/devices/system/cpu/cpu1/sched_mostly_idle_nr_run
-                echo 3 > /sys/devices/system/cpu/cpu2/sched_mostly_idle_nr_run
-                echo 3 > /sys/devices/system/cpu/cpu3/sched_mostly_idle_nr_run
-
-                echo 0 > /sys/devices/system/cpu/cpu0/sched_prefer_idle
-                echo 0 > /sys/devices/system/cpu/cpu1/sched_prefer_idle
-                echo 0 > /sys/devices/system/cpu/cpu2/sched_prefer_idle
-                echo 0 > /sys/devices/system/cpu/cpu3/sched_prefer_idle
 
 		# core_ctl is not needed for 8917. Disable it.
 		echo 1 > /sys/devices/system/cpu/cpu0/core_ctl/disable
@@ -1660,18 +1830,16 @@ case "$target" in
                 # disable thermal core_control to update interactive gov settings
                 echo 0 > /sys/module/msm_thermal/core_control/enabled
 
-                echo 1 > /sys/devices/system/cpu/cpu0/online
-                echo "interactive" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
-                echo "19000 1094400:39000" > /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay
-                echo 85 > /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load
-                echo 20000 > /sys/devices/system/cpu/cpufreq/interactive/timer_rate
-                echo 1094400 > /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq
-                echo 0 > /sys/devices/system/cpu/cpufreq/interactive/io_is_busy
-                echo "1 960000:85 1094400:90" > /sys/devices/system/cpu/cpufreq/interactive/target_loads
-                echo 40000 > /sys/devices/system/cpu/cpufreq/interactive/min_sample_time
-                echo 40000 > /sys/devices/system/cpu/cpufreq/interactive/sampling_down_factor
+                KernelVersionStr=`cat /proc/sys/kernel/osrelease`
+                KernelVersionS=${KernelVersionStr:2:2}
+                KernelVersionA=${KernelVersionStr:0:1}
+                KernelVersionB=${KernelVersionS%.*}
+                if [ $KernelVersionA -ge 4 ] && [ $KernelVersionB -ge 9 ]; then
+                    8917_sched_dcvs_eas
+                else
+                    8917_sched_dcvs_hmp
+                fi
                 echo 960000 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
-
                 # re-enable thermal core_control now
                 echo 1 > /sys/module/msm_thermal/core_control/enabled
 
@@ -1686,12 +1854,6 @@ case "$target" in
 
                 # Enable low power modes
                 echo 0 > /sys/module/lpm_levels/parameters/sleep_disabled
-
-                # Enable sched guided freq control
-                echo 1 > /sys/devices/system/cpu/cpufreq/interactive/use_sched_load
-                echo 1 > /sys/devices/system/cpu/cpufreq/interactive/use_migration_notif
-                echo 50000 > /proc/sys/kernel/sched_freq_inc_notify
-                echo 50000 > /proc/sys/kernel/sched_freq_dec_notify
 
                 # Set rps mask
                 echo 2 > /sys/class/net/rmnet0/queues/rx-0/rps_cpus
@@ -1727,35 +1889,6 @@ case "$target" in
                 #disable sched_boost in 8937
                 echo 0 > /proc/sys/kernel/sched_boost
 
-                # HMP Task packing settings
-                echo 20 > /proc/sys/kernel/sched_small_task
-                echo 30 > /sys/devices/system/cpu/cpu0/sched_mostly_idle_load
-                echo 30 > /sys/devices/system/cpu/cpu1/sched_mostly_idle_load
-                echo 30 > /sys/devices/system/cpu/cpu2/sched_mostly_idle_load
-                echo 30 > /sys/devices/system/cpu/cpu3/sched_mostly_idle_load
-                echo 30 > /sys/devices/system/cpu/cpu4/sched_mostly_idle_load
-                echo 30 > /sys/devices/system/cpu/cpu5/sched_mostly_idle_load
-                echo 30 > /sys/devices/system/cpu/cpu6/sched_mostly_idle_load
-                echo 30 > /sys/devices/system/cpu/cpu7/sched_mostly_idle_load
-
-                echo 3 > /sys/devices/system/cpu/cpu0/sched_mostly_idle_nr_run
-                echo 3 > /sys/devices/system/cpu/cpu1/sched_mostly_idle_nr_run
-                echo 3 > /sys/devices/system/cpu/cpu2/sched_mostly_idle_nr_run
-                echo 3 > /sys/devices/system/cpu/cpu3/sched_mostly_idle_nr_run
-                echo 3 > /sys/devices/system/cpu/cpu4/sched_mostly_idle_nr_run
-                echo 3 > /sys/devices/system/cpu/cpu5/sched_mostly_idle_nr_run
-                echo 3 > /sys/devices/system/cpu/cpu6/sched_mostly_idle_nr_run
-                echo 3 > /sys/devices/system/cpu/cpu7/sched_mostly_idle_nr_run
-
-                echo 0 > /sys/devices/system/cpu/cpu0/sched_prefer_idle
-                echo 0 > /sys/devices/system/cpu/cpu1/sched_prefer_idle
-                echo 0 > /sys/devices/system/cpu/cpu2/sched_prefer_idle
-                echo 0 > /sys/devices/system/cpu/cpu3/sched_prefer_idle
-                echo 0 > /sys/devices/system/cpu/cpu4/sched_prefer_idle
-                echo 0 > /sys/devices/system/cpu/cpu5/sched_prefer_idle
-                echo 0 > /sys/devices/system/cpu/cpu6/sched_prefer_idle
-                echo 0 > /sys/devices/system/cpu/cpu7/sched_prefer_idle
-
                 for devfreq_gov in /sys/class/devfreq/qcom,mincpubw*/governor
                 do
                     echo "cpufreq" > $devfreq_gov
@@ -1782,32 +1915,17 @@ case "$target" in
                 # disable thermal core_control to update interactive gov and core_ctl settings
                 echo 0 > /sys/module/msm_thermal/core_control/enabled
 
-                # enable governor for perf cluster
-                echo 1 > /sys/devices/system/cpu/cpu0/online
-                echo "interactive" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
-                echo "19000 1094400:39000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay
-                echo 85 > /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load
-                echo 20000 > /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate
-                echo 1094400 > /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq
-                echo 0 > /sys/devices/system/cpu/cpu0/cpufreq/interactive/io_is_busy
-                echo "1 960000:85 1094400:90 1344000:80" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads
-                echo 40000 > /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time
-                echo 40000 > /sys/devices/system/cpu/cpu0/cpufreq/interactive/sampling_down_factor
+                KernelVersionStr=`cat /proc/sys/kernel/osrelease`
+                KernelVersionS=${KernelVersionStr:2:2}
+                KernelVersionA=${KernelVersionStr:0:1}
+                KernelVersionB=${KernelVersionS%.*}
+                if [ $KernelVersionA -ge 4 ] && [ $KernelVersionB -ge 9 ]; then
+                    8937_sched_dcvs_eas
+                else
+                    8937_sched_dcvs_hmp
+                fi
                 echo 960000 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
-
-                # enable governor for power cluster
-                echo 1 > /sys/devices/system/cpu/cpu4/online
-                echo "interactive" > /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor
-                echo 39000 > /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay
-                echo 90 > /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load
-                echo 20000 > /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate
-                echo 768000 > /sys/devices/system/cpu/cpu4/cpufreq/interactive/hispeed_freq
-                echo 0 > /sys/devices/system/cpu/cpu4/cpufreq/interactive/io_is_busy
-                echo "1 768000:90" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads
-                echo 40000 > /sys/devices/system/cpu/cpu4/cpufreq/interactive/min_sample_time
-                echo 40000 > /sys/devices/system/cpu/cpu4/cpufreq/interactive/sampling_down_factor
                 echo 768000 > /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq
-
                 # Disable L2-GDHS low power modes
                 echo N > /sys/module/lpm_levels/system/pwr/pwr-l2-gdhs/idle_enabled
                 echo N > /sys/module/lpm_levels/system/pwr/pwr-l2-gdhs/suspend_enabled
@@ -1829,14 +1947,6 @@ case "$target" in
                 # HMP scheduler (big.Little cluster related) settings
                 echo 93 > /proc/sys/kernel/sched_upmigrate
                 echo 83 > /proc/sys/kernel/sched_downmigrate
-
-                # Enable sched guided freq control
-                echo 1 > /sys/devices/system/cpu/cpu0/cpufreq/interactive/use_sched_load
-                echo 1 > /sys/devices/system/cpu/cpu0/cpufreq/interactive/use_migration_notif
-                echo 1 > /sys/devices/system/cpu/cpu4/cpufreq/interactive/use_sched_load
-                echo 1 > /sys/devices/system/cpu/cpu4/cpufreq/interactive/use_migration_notif
-                echo 50000 > /proc/sys/kernel/sched_freq_inc_notify
-                echo 50000 > /proc/sys/kernel/sched_freq_dec_notify
 
                 # Enable core control
                 echo 2 > /sys/devices/system/cpu/cpu0/core_ctl/min_cpus
@@ -1922,11 +2032,10 @@ case "$target" in
             echo 1 > /proc/sys/kernel/sched_prefer_sync_wakee_to_waker
 
             # cpuset settings
-            echo 0-7 > /dev/cpuset/top-app/cpus
-            echo 4-7 > /dev/cpuset/foreground/boost/cpus
-            echo 0-2,4-7 > /dev/cpuset/foreground/cpus
             echo 0-1 > /dev/cpuset/background/cpus
             echo 0-2 > /dev/cpuset/system-background/cpus
+            echo 4-7 > /dev/cpuset/foreground/boost/cpus
+            echo 0-2,4-7 > /dev/cpuset/foreground/cpus
 
             # disable thermal bcl hotplug to switch governor
             echo 0 > /sys/module/msm_thermal/core_control/enabled
@@ -1995,11 +2104,12 @@ case "$target" in
             # re-enable thermal and BCL hotplug
             echo 1 > /sys/module/msm_thermal/core_control/enabled
 
-            #Add-begin-HMI_L8866_A01-794,lijiang@longcheer.com,2018-01-20
-            #Enable input boost configuration
+            # enable input boost
             echo "0:1401600" > /sys/module/cpu_boost/parameters/input_boost_freq
-            echo 40 > /sys/module/cpu_boost/parameters/input_boost_ms
-            #Add-end-HMI_L8866_A01-794
+            echo 120 > /sys/module/cpu_boost/parameters/input_boost_ms
+            echo "0:0 1:0 2:0 3:0 4:2208000 5:0 6:0 7:0" > /sys/module/cpu_boost/parameters/powerkey_input_boost_freq
+            echo 400 > /sys/module/cpu_boost/parameters/powerkey_input_boost_ms
+
             # Set Memory parameters
             configure_memory_parameters
 
@@ -2035,11 +2145,11 @@ case "$target" in
 
 
             # Start Host based Touch processing
-            #    case "$hw_platform" in
-            #            "MTP" | "Surf" | "RCM" | "QRD" )
-            #            start_hbtp
-            #            ;;
-            #    esac
+                case "$hw_platform" in
+                        "MTP" | "Surf" | "RCM" | "QRD" )
+                        start_hbtp
+                        ;;
+                esac
             ;;
         esac
         #Apply settings for sdm630
@@ -2047,11 +2157,11 @@ case "$target" in
             "318" | "327" )
 
             # Start Host based Touch processing
-            #case "$hw_platform" in
-            #    "MTP" | "Surf" | "RCM" | "QRD" )
-            #    start_hbtp
-            #    ;;
-            #esac
+            case "$hw_platform" in
+                "MTP" | "Surf" | "RCM" | "QRD" )
+                start_hbtp
+                ;;
+            esac
 
             # Setting b.L scheduler parameters
             echo 85 > /proc/sys/kernel/sched_upmigrate
@@ -2664,11 +2774,11 @@ case "$target" in
             echo 50 > $cpubw/polling_interval
             echo "2288 4577 6500 8132 9155 10681" > $cpubw/bw_hwmon/mbps_zones
             echo 4 > $cpubw/bw_hwmon/sample_ms
-            echo 34 > $cpubw/bw_hwmon/io_percent
+            echo 40 > $cpubw/bw_hwmon/io_percent
             echo 20 > $cpubw/bw_hwmon/hist_memory
             echo 10 > $cpubw/bw_hwmon/hyst_length
             echo 0 > $cpubw/bw_hwmon/low_power_ceil_mbps
-            echo 34 > $cpubw/bw_hwmon/low_power_io_percent
+            echo 40 > $cpubw/bw_hwmon/low_power_io_percent
             echo 20 > $cpubw/bw_hwmon/low_power_delay
             echo 0 > $cpubw/bw_hwmon/guard_band_mbps
             echo 250 > $cpubw/bw_hwmon/up_scale
@@ -2681,11 +2791,11 @@ case "$target" in
             echo 50 > $llccbw/polling_interval
             echo "1720 2929 4943 5931 6881" > $llccbw/bw_hwmon/mbps_zones
             echo 4 > $llccbw/bw_hwmon/sample_ms
-            echo 68 > $llccbw/bw_hwmon/io_percent
+            echo 80 > $llccbw/bw_hwmon/io_percent
             echo 20 > $llccbw/bw_hwmon/hist_memory
             echo 10 > $llccbw/bw_hwmon/hyst_length
             echo 0 > $llccbw/bw_hwmon/low_power_ceil_mbps
-            echo 68 > $llccbw/bw_hwmon/low_power_io_percent
+            echo 80 > $llccbw/bw_hwmon/low_power_io_percent
             echo 20 > $llccbw/bw_hwmon/low_power_delay
             echo 0 > $llccbw/bw_hwmon/guard_band_mbps
             echo 250 > $llccbw/bw_hwmon/up_scale
