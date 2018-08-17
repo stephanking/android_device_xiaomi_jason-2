@@ -225,6 +225,9 @@ TARGET_POWERHAL_VARIANT := qcom
 # Keymaster
 TARGET_PROVIDES_KEYMASTER := true
 
+# Enable real time lockscreen charging current values
+BOARD_GLOBAL_CFLAGS += -DBATTERY_REAL_INFO
+
 # Encryption
 TARGET_HW_DISK_ENCRYPTION := true
 
