@@ -3303,3 +3303,6 @@ misc_link=$(ls -l /dev/block/bootdevice/by-name/misc)
 real_path=${misc_link##*>}
 setprop persist.vendor.mmi.misc_dev_path $real_path
 
+    echo 3000000 > /sys/class/power_supply/battery/constant_charge_current_max
+    echo 1000 > /sys/class/power_supply/bms/temp_warm
+
