@@ -84,4 +84,19 @@ patchelf --replace-needed android.hardware.gnss@1.0.so android.hardware.gnss@1.0
 DPLMEDIA="$DEVICE_BLOB_ROOT"/vendor/lib64/lib-dplmedia.so
 patchelf --remove-needed libmedia.so "$DPLMEDIA"
 
+#
+# Replace libicuuc.so with libicuuc-v27.so for libMiCameraHal.so
+#
+ICUUC_V27="$DEVICE_BLOB_ROOT"/vendor/lib/libicuuc-v27.so
+patchelf --replace-needed libicuuc.so libicuuc-v27.so "$MI_CAMERA_HAL"
+patchelf --set-soname libicuuc-v27.so "$ICUUC_V27"
+
+#
+# Replace libminikin.so with libminikin-v27.so for camera.sdm660.so
+#
+CAMERA_SDM660="$DEVICE_BLOB_ROOT"/vendor/lib/hw/camera.sdm660.so
+MINIKIN_V27="$DEVICE_BLOB_ROOT"/vendor/lib/libminikin-v27.so
+patchelf --replace-needed libminikin.so libminikin-v27.so "$CAMERA_SDM660"
+patchelf --set-soname libminikin-v27.so "$MINIKIN_V27"
+
 "$MY_DIR"/setup-makefiles.sh
