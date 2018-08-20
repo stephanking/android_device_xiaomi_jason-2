@@ -71,6 +71,11 @@ CAMERA2_SENSOR_MODULES="$COMMON_BLOB_ROOT"/vendor/lib/libmmcamera2_sensor_module
 sed -i "s|/system/etc/camera/|/vendor/etc/camera/|g" "$CAMERA2_SENSOR_MODULES"
 
 #
+# Remove unused libcamera_client.so dependency in libsac.so
+#
+SAC="$COMMON_BLOB_ROOT"/vendor/lib/libsac.so
+patchelf --remove-needed libcamera_client.so "$SAC"
+
 # Treble sucks
 #
 patchelf --replace-needed android.hardware.gnss@1.0.so android.hardware.gnss@1.0-v27.so $COMMON_BLOB_ROOT/vendor/lib64/vendor.qti.gnss@1.0_vendor.so
