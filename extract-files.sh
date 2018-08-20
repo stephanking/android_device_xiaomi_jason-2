@@ -75,4 +75,10 @@ sed -i "s|/system/etc/camera/|/vendor/etc/camera/|g" "$CAMERA2_SENSOR_MODULES"
 #
 patchelf --replace-needed android.hardware.gnss@1.0.so android.hardware.gnss@1.0-v27.so $COMMON_BLOB_ROOT/vendor/lib64/vendor.qti.gnss@1.0_vendor.so
 
+#
+# Remove unused libmedia.so dependency in the IMS stack
+#
+DPLMEDIA="$COMMON_BLOB_ROOT"/vendor/lib64/lib-dplmedia.so
+patchelf --remove-needed libmedia.so "$DPLMEDIA"
+
 "$MY_DIR"/setup-makefiles.sh
