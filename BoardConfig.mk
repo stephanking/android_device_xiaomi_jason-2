@@ -212,6 +212,9 @@ TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
 # RIL
 TARGET_RIL_VARIANT := caf
 
+# Security patch level
+VENDOR_SECURITY_PATCH := 2018-08-01
+
 # SELinux
 include device/qcom/sepolicy/sepolicy.mk
 BOARD_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy
