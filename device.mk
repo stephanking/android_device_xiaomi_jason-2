@@ -326,7 +326,7 @@ PRODUCT_PACKAGES += \
 
 # Camera
 PRODUCT_PACKAGES += \
-    Snap
+    MiuiCamera
 
 # IPv6
 PRODUCT_PACKAGES += \
@@ -395,3 +395,5 @@ PRODUCT_PACKAGES += \
 $(call inherit-product, device/xiaomi/jason/treble.mk)
 # Call the proprietary setup
 $(call inherit-product, vendor/xiaomi/jason/jason-vendor.mk)
+$(call inherit-product, vendor/xiaomi/MiuiCamera/MiuiCamera-vendor.mk)
+$(call inherit-product, vendor/xiaomi/MiuiCamera/jason.mk)
