@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2018 The Lineage OS Project
+<!-- Copyright (C) 2018 The LineageOS Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -14,9 +14,14 @@
      limitations under the License.
 -->
 <resources>
-    <string name="advanced_settings">扩展</string>
-    <string name="advanced_settings_summary">附加高级设置</string>
-    <string name="camera_title">相机</string>
-    <string name="camera_hal3_title">开启 Camera2 API</string>
-    <string name="camera_title_summary">需要重启</string>
+    <string name="app_name">Xiaomi</string>
+    <string name="advanced_settings">小米设置</string>
+    <string name="advanced_settings_summary">高级设置</string>
+    <string name="category_vibrator">振动</string>
+    <string name="vib_strength_title_head">振动强度</string>
+    <string name="vib_strength_summary_head">调整振动强度</string>
+    <!-- devicesettings -->
+    <string name="category_devicesettings">传感器</string>
+    <string name="devicesettings_title">手势</string>
+    <string name="devicesettings_summary">通知和唤醒的手势</string>
 </resources>

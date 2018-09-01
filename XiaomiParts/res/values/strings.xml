@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2018 The Lineage OS Project
+<!-- Copyright (C) 2014-2017 The OmniROM Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -14,9 +14,14 @@
      limitations under the License.
 -->
 <resources>
-    <string name="advanced_settings">Advanced</string>
-    <string name="advanced_settings_summary">Extra Settings</string>
-    <string name="camera_title">Camera</string>
-    <string name="camera_hal3_title">Enable Camera2 API</string>
-    <string name="camera_title_summary">Requires reboot</string>
+    <string name="app_name">Xiaomi</string>
+    <string name="advanced_settings">Xiaomi</string>
+    <string name="advanced_settings_summary">Advanced</string>
+    <string name="category_vibrator">Vibrator</string>
+    <string name="vib_strength_title_head">Strength</string>
+    <string name="vib_strength_summary_head">Define the strength of the vibrator</string>
+<!-- devicesettings -->
+    <string name="category_devicesettings">Sensors</string>
+    <string name="devicesettings_title">Gestures</string>
+    <string name="devicesettings_summary">gestures of notifications and awakenings</string>
 </resources>
