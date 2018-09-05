@@ -210,9 +210,6 @@ persist.s5k3l8_ofilm.light.lux=367
 # Create zram disk
 #ro.vendor.qti.config.zram=true
 
-#set for xiaomi headset effect
-ro.audio.soundfx.dirac=true
-
 #set maximum supported adapter voltage
 persist.chg.max_volt_mv=9000
 
@@ -247,9 +244,6 @@ sys.autobrightness_optimize=true
 #enable snapshot
 persist.vendor.radio.snapshot_enabled=1
 persist.vendor.radio.snapshot_timer=5
-
-#low audio flinger standby delay to reduce power consumption
-ro.audio.flinger_standbytime_ms=300
 
 #Vendor security patch
 ro.lineage.build.vendor_security_patch=2018-04-01
