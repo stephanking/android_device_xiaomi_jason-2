@@ -620,14 +620,9 @@ vendor/lib/libllvm-qgl.so
 vendor/lib/libmm-disp-apis.so
 vendor/lib/libmm-qdcm.so
 vendor/lib/libOpenCL.so
-vendor/lib/libqseed3.so
 vendor/lib/librs_adreno_sha1.so
 vendor/lib/librs_adreno.so
 vendor/lib/libRSDriver_adreno.so
-vendor/lib/libsdm-color.so
-vendor/lib/libsdm-diag.so
-vendor/lib/libsdmextension.so
-vendor/lib/libtinyxml2_1.so
 vendor/lib64/egl/eglSubDriverAndroid.so
 vendor/lib64/egl/libEGL_adreno.so
 vendor/lib64/egl/libGLESv1_CM_adreno.so
@@ -650,14 +645,19 @@ vendor/lib64/libllvm-qgl.so
 vendor/lib64/libmm-disp-apis.so
 vendor/lib64/libmm-qdcm.so
 vendor/lib64/libOpenCL.so
-vendor/lib64/libqseed3.so
 vendor/lib64/librs_adreno_sha1.so
 vendor/lib64/librs_adreno.so
 vendor/lib64/libRSDriver_adreno.so
-vendor/lib64/libsdm-color.so
-vendor/lib64/libsdm-diag.so
-vendor/lib64/libsdmextension.so
-vendor/lib64/libtinyxml2_1.so
+
+# Graphics (SDM) - from LA.UM.7.2.r1-03600-sdm660.0
+vendor/lib/libqseed3.so|e29a10228dfd0cceee2e0ac59c27535d8e87db92
+-vendor/lib/libsdm-disp-vndapis.so|66477d2b02a21c14dd734f6ad6dbfbe03ebfc52c
+vendor/lib64/libqseed3.so|d23c424bf8e5530049562c7e1d5d3cbda20ca79e
+vendor/lib64/libsdm-color.so|ceeb85c8e8c4f9eeb8a0b7e85869eac35bc4b9dc
+vendor/lib64/libsdm-diag.so|db8ca0ea417991ba22e8e7919d918d0a6b908ab3
+-vendor/lib64/libsdm-disp-vndapis.so|7dd94cb4409a987761d0c5b0c0c977e24c548d74
+vendor/lib64/libsdmextension.so|79fc5ce1b3bd237eb60d9d508353acd6f6728998
+vendor/lib64/libtinyxml2_1.so|eae7c0526a56300dad04bce1a4e154a5869b3542
 
 # Keystore
 vendor/lib/hw/keystore.sdm660.so
@@ -719,7 +719,6 @@ vendor/bin/hw/vendor.display.color@1.0-service
 vendor/bin/mm-pp-dpps
 vendor/etc/init/vendor.display.color@1.0-service.rc
 vendor/lib64/libdisp-aba.so
-vendor/lib64/libsdm-disp-vndapis.so
 vendor/lib64/vendor.display.color@1.0_vendor.so
 vendor/lib64/vendor.display.postproc@1.0_vendor.so
 
