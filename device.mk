@@ -363,10 +363,8 @@ PRODUCT_PACKAGES += \
     android.hidl.manager@1.0 \
     android.hidl.manager@1.0-java
 
-
-# Vendor security patch level
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.lineage.build.vendor_security_patch=2018-07-01
+# Properties
+include $(LOCAL_PATH)/vendor_prop.mk
 
 # VNDK-SP:
 PRODUCT_PACKAGES += \
