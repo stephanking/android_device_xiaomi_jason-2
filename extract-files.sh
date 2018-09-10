@@ -74,10 +74,6 @@ sed -i "s|/system/etc/camera/|/vendor/etc/camera/|g" "$CAMERA2_SENSOR_MODULES"
 SAC="$DEVICE_BLOB_ROOT"/vendor/lib/libsac.so
 patchelf --remove-needed libcamera_client.so "$SAC"
 
-# Treble sucks
-#
-patchelf --replace-needed android.hardware.gnss@1.0.so android.hardware.gnss@1.0-v27.so $DEVICE_BLOB_ROOT/vendor/lib64/vendor.qti.gnss@1.0_vendor.so
-
 #
 # Remove unused libmedia.so dependency in the IMS stack
 #
