@@ -98,6 +98,10 @@ PRODUCT_PROPERTY_OVERRIDES += \
 	persist.dbg.vt_avail_ovr=1 \
 	persist.vendor.qti.telephony.vt_cam_interface=1
 
+# Media
+PRODUCT_PROPERTY_OVERRIDES += \
+        video.disable.ubwc=1
+
 # Memory
 PRODUCT_PROPERTY_OVERRIDES += \
 	dalvik.vm.heapgrowthlimit=256m \
