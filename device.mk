@@ -291,23 +291,20 @@ PRODUCT_PACKAGES += \
 
 # NFC
 PRODUCT_PACKAGES += \
-    NQNfcNci \
-    libnqnfc-nci \
-    libnqnfc_nci_jni \
-    nfc_nci.nqx.default \
-    libp61-jcop-kit \
-    com.nxp.nfc.nq \
-    com.nxp.nfc.nq.xml \
+    com.android.nfc_extras \
+    nfc_nci.sdm660 \
+    NfcNci \
     nqnfcee_access.xml \
     nqnfcse_access.xml \
-    Tag \
-    com.android.nfc_extras \
+    Tag
+
+PRODUCT_PACKAGES += \
     android.hardware.nfc@1.0-impl \
-    vendor.nxp.hardware.nfc@1.0-impl \
-    vendor.nxp.hardware.nfc@1.0-service
+    android.hardware.nfc@1.0-service
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/nfc/libnfc-brcm.conf:system/etc/libnfc-brcm.conf \
+    $(LOCAL_PATH)/configs/nfc/libnfc-nxp_default.conf:system/etc/libnfc-nxp_default.conf \
     $(LOCAL_PATH)/configs/nfc/libnfc-nxp.conf:system/etc/libnfc-nxp.conf
 
 # OMX
