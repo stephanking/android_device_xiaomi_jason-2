@@ -208,7 +208,9 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     libcurl \
     libgnss \
-    libgnsspps \
+    libgnsspps
+
+PRODUCT_PACKAGES += \
     android.hardware.gnss@1.1-impl-qti \
     android.hardware.gnss@1.1-service-qti
 
@@ -287,8 +289,7 @@ PRODUCT_COPY_FILES += \
 # Net
 PRODUCT_PACKAGES += \
     android.system.net.netd@1.0 \
-    libandroid_net \
-    netutils-wrapper-1.0
+    libandroid_net
 
 # NFC
 PRODUCT_PACKAGES += \
