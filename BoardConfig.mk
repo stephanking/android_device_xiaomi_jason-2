@@ -213,8 +213,9 @@ include device/qcom/sepolicy/sepolicy.mk
 BOARD_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy
 
 # Treble
-#PRODUCT_FULL_TREBLE_OVERRIDE := true
-PRODUCT_VENDOR_MOVE_ENABLED := true
+BOARD_PROPERTY_OVERRIDES_SPLIT_ENABLED := true
+PLATFORM_VNDK_VERSION := 27
+PRODUCT_FULL_TREBLE_OVERRIDE := true
 
 # Use mke2fs to create ext4 images
 TARGET_USES_MKE2FS := true
