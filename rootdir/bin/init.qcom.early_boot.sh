@@ -1,6 +1,7 @@
 #! /vendor/bin/sh
 
-# Copyright (c) 2012-2013,2016 The Linux Foundation. All rights reserved.
+# Copyright (c) 2012-2013,2016,2018 The Linux Foundation.
+# All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -61,6 +62,24 @@ else
     log -t DRM_BOOT -p w "file: '$vbfile' or perms doesn't exist"
 fi
 
+function set_density_by_fb() {
+    #put default density based on width
+    if [ -z $fb_width ]; then
+        setprop ro.sf.lcd_density 320
+    else
+        if [ $fb_width -ge 1440 ]; then
+           setprop ro.sf.lcd_density 560
+        elif [ $fb_width -ge 1080 ]; then
+           setprop ro.sf.lcd_density 480
+        elif [ $fb_width -ge 720 ]; then
+           setprop ro.sf.lcd_density 320 #for 720X1280 resolution
+        elif [ $fb_width -ge 480 ]; then
+            setprop ro.sf.lcd_density 240 #for 480X854 QRD resolution
+        else
+            setprop ro.sf.lcd_density 160
+        fi
+    fi
+}
 target=`getprop ro.board.platform`
 case "$target" in
     "msm7630_surf" | "msm7630_1x" | "msm7630_fusion")
@@ -207,7 +226,7 @@ case "$target" in
         # 196609 is decimal for 0x30001 to report version 3.1
         # 196610 is decimal for 0x30002 to report version 3.2
         case "$soc_hwid" in
-            294|295|296|297|298|313)
+            294|295|296|297|298|313|353|354|363|364)
                 setprop ro.opengles.version 196610
                 ;;
             303|307|308|309|320)
@@ -224,6 +243,15 @@ case "$target" in
         case "$soc_hwplatform" in
             *)
                 setprop persist.graphics.vulkan.disable true
+                setprop ro.opengles.version 196608
+                ;;
+        esac
+        ;;
+    "msm8916")
+        case "$soc_hwplatform" in
+            *)
+                setprop persist.graphics.vulkan.disable true
+                setprop ro.opengles.version 196608
                 ;;
         esac
         ;;
@@ -260,10 +288,16 @@ case "$target" in
         esac
         ;;
     "msm8953")
-        cap_ver=`cat /sys/devices/soc/1d00000.qcom,vidc/capability_version` 2> /dev/null
-        if [ $cap_ver -eq 1 ]; then
-            setprop media.msm8953.version 1
-        fi
+        cap_ver = 1
+                if [ -e "/sys/devices/platform/soc/1d00000.qcom,vidc/capability_version" ]; then
+                    cap_ver=`cat /sys/devices/platform/soc/1d00000.qcom,vidc/capability_version` 2> /dev/null
+                else
+                    cap_ver=`cat /sys/devices/soc/1d00000.qcom,vidc/capability_version` 2> /dev/null
+                fi
+
+                if [ $cap_ver -eq 1 ]; then
+                    setprop media.msm8953.version 1
+                fi
         ;;
     "msm8952")
       case "$soc_hwid" in
@@ -291,32 +325,6 @@ case "$target" in
       esac
       ;;
 esac
-
-# In mpss AT version is greater than 3.1, need
-# to use the new vendor-ril which supports L+L feature
-# otherwise use the existing old one.
-if [ -f /firmware/verinfo/ver_info.txt ]; then
-  modem=`cat /firmware/verinfo/ver_info.txt |
-  sed -n 's/^[^:]*modem[^:]*:[[:blank:]]*//p' |
-  sed 's/.*AT.\(.*\)/\1/g' | cut -d \- -f 1`
-  zygote=`getprop ro.zygote`
-  case "$zygote" in
-  "zygote64_32")
-    if [ "$modem" \< "3.1" ]; then
-      setprop vendor.rild.libpath "/vendor/lib64/libril-qc-qmi-1.so"
-    else
-      setprop vendor.rild.libpath "/vendor/lib64/libril-qc-hal-qmi.so"
-    fi
-    ;;
-  "zygote32")
-    if [ "$modem" \< "3.1" ]; then
-      setprop vendor.rild.libpath "/vendor/lib/libril-qc-qmi-1.so"
-    else
-      setprop vendor.rild.libpath "/vendor/lib/libril-qc-hal-qmi.so"
-    fi
-    ;;
-   esac
-fi
 
 if [ -f /firmware/verinfo/ver_info.txt ]; then
     # In mpss AT version is greater than 3.1, need
@@ -391,6 +399,7 @@ esac
 #Since lcd density has read only
 #property, it will not overwrite previous set
 #property if any target is setting forcefully.
+set_density_by_fb
 
 # Setup display nodes & permissions
 # HDMI can be fb1 or fb2

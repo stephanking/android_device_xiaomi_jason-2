@@ -203,7 +203,7 @@ TARGET_TAP_TO_WAKE_NODE := "/sys/bus/i2c/devices/4-0020/input/input1/wake_gestur
 TARGET_USES_INTERACTION_BOOST := true
 
 # Recovery
-TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/rootdir/root/fstab.qcom
+TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/rootdir/etc/fstab.qcom
 TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
 
 # RIL

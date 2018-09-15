@@ -344,32 +344,23 @@ PRODUCT_COPY_FILES += \
 # Ramdisk
 PRODUCT_PACKAGES += \
     fstab.qcom \
-    init.panel_info.sh \
-    init.qcom.rc \
-    init.class_main.sh \
-    init.qcom.sh \
-    init.qcom.sensors.sh \
-    init.qcom.usb.rc \
     init.msm.usb.configfs.rc \
+    init.qcom.rc \
+    init.qcom.usb.rc \
     init.target.rc \
-    init.crda.sh \
-    init.mdm.sh \
-    init.qcom.class_core.sh \
-    init.qcom.coex.sh \
-    init.qcom.crashdata.sh \
-    init.qcom.early_boot.sh \
-    init.qcom.efs.sync.sh \
-    init.qcom.sdio.sh \
-    init.qcom.syspart_fixup.sh \
-    init.qcom.usb.sh \
-    init.qcom.wifi.sh \
-    init.qti.ims.sh \
-    init.goodix.sh \
-    ueventd.rc
+    ueventd.qcom.rc
 
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/rootdir/bin/init.qti.qseecomd.sh:$(TARGET_COPY_OUT_VENDOR)/bin/init.qti.qseecomd.sh \
-    $(LOCAL_PATH)/rootdir/etc/init.qcom.post_boot.sh:$(TARGET_COPY_OUT_VENDOR)/bin/init.qcom.post_boot.sh
+PRODUCT_PACKAGES += \
+    init.class_main.sh \
+    init.panel_info.sh \
+    init.qcom.class_core.sh \
+    init.qcom.early_boot.sh \
+    init.qcom.post_boot.sh \
+    init.qcom.sensors.sh \
+    init.qcom.sh \
+    init.qcom.ssr.sh \
+    init.qcom.usb.sh \
+    init.qti.ims.sh \
 
 # RCS
 PRODUCT_PACKAGES += \

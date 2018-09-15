@@ -30,7 +30,6 @@ import /vendor/etc/init/hw/init.msm.usb.configfs.rc
 import /vendor/etc/init/hw/init.target.rc
 import /vendor/etc/init/hw/init.qcom.factory.rc
 import /vendor/etc/init/hw/init.qcom.test.rc
-import /vendor/etc/init/hw/init.factory.mi.rc
 
 on early-init
     mount debugfs debugfs /sys/kernel/debug
@@ -41,7 +40,6 @@ on early-init
 on init
     # Set permissions for persist partition
     mkdir /persist 0771 root system
-    mkdir /persistbak 0771 root system
 
     # Support legacy paths
     symlink /sdcard /mnt/sdcard
@@ -218,6 +216,9 @@ on boot
     # Create vpp directory
     mkdir /persist/vpp 0770 media media
 
+    # Create hvdcp_opti directory
+    mkdir /persist/hvdcp_opti 0770 root system
+
 # msm specific files that need to be created on /data
 on post-fs-data
     mkdir /data/vendor/misc 01771 system system
@@ -296,10 +297,6 @@ on post-fs-data
     mkdir /data/dpm 0771 system system
     chown system system /data/dpm
 
-    # Create the directories used by LctDiagSendData
-    mkdir /data/lct_diag 0771 system system
-    chown system system /data/lct_diag
-
     mkdir /data/dpm/nsrm 0771 system system
     chown system system /data/dpm/nsrm
 
@@ -320,8 +317,6 @@ on post-fs-data
     # We chown/chmod /persist again so because mount is run as root + defaults
     chown root system /persist
     chmod 0771 /persist
-    chown root system /persistbak
-    chmod 0771 /persistbak
     chown system system /persist/WCNSS_qcom_wlan_nv.bin
     chmod 0664 /sys/devices/platform/msm_sdcc.1/polling
     chmod 0664 /sys/devices/platform/msm_sdcc.2/polling
@@ -342,6 +337,9 @@ on post-fs-data
     mkdir /data/vendor/location 0770 gps gps
     mkdir /data/vendor/location/mq 0770 gps gps
     mkdir /data/vendor/location/xtwifi 0770 gps gps
+    mkdir /dev/socket/location 0770 gps gps
+    mkdir /dev/socket/location/mq 0770 gps gps
+    mkdir /dev/socket/location/xtra 0770 gps gps
 
     #Create directory from IMS services
     mkdir /data/shared 0755
@@ -366,7 +364,7 @@ on post-fs-data
     setprop vold.post_fs_data_done 1
 
     #Create a folder for SRS to be able to create a usercfg file
-    mkdir /data/data/media 0770 media media
+    #mkdir /data/data/media 0770 media media
 
     #Create FM dir for patchdownloader
     mkdir /data/misc/fm 0770 system system
@@ -443,7 +441,10 @@ service qcomsysd /vendor/bin/qcom-system-daemon
     disabled
 
 on property:persist.vendor.qcomsysd.enabled=1
-    start qcomsysd
+    enable qcomsysd
+
+on property:persist.vendor.qcomsysd.enabled=0
+    stop qcomsysd
 
 service ssr_setup /vendor/bin/ssr_setup
     oneshot
@@ -486,31 +487,11 @@ on property:sys.boot_completed=1
     #WDSP FW boot sysfs node used by STHAL
     chown media audio /sys/kernel/wdsp0/boot
     chown media audio /sys/kernel/wcd_cpe0/fw_name
-    restorecon /sys/tp_selftest/syn_selftest_result
-    chown system system /sys/tp_selftest/syn_selftest_result
-    chmod 0777 /sys/tp_selftest/syn_selftest_result
-    chown system system /sys/class/ant_class/ant_state
-    chmod 0644 /sys/class/ant_class/ant_state
 
 # corefile limit
 on property:persist.debug.trace=1
     mkdir /data/core 0777 root root
     write /proc/sys/kernel/core_pattern "/data/core/%E.%p.%e"
-
-#zhuxiaomin @ 20170928
-service iwprivftm /system/bin/sh /system/etc/iwpriv.agent.sh
-    oneshot
-    disabled
-on property:persist.sys.iwpriv=1
-    start iwprivftm
-
-#++++>
-on property:sys.ptt_socket_app=1
-    start ptt_ffbm
-
-on property:sys.ftmd=1
-    start ftmd
-#<++++  zhuxiaomin @ 20170928    Add for WiFi & BT FFBM test.
 
 on property:init.svc.wpa_supplicant=stopped
     stop dhcpcd
@@ -554,7 +535,6 @@ service qcom-c_main-sh /vendor/bin/init.class_main.sh
 
 on property:vold.decrypt=trigger_restart_framework
     start qcom-c_main-sh
-    start config_bt_addr
     start wcnss-service
     start cnss_diag
 
@@ -569,7 +549,7 @@ service cnd /vendor/bin/cnd
 service dpmQmiMgr /vendor/bin/dpmQmiMgr
     class main
     user system
-    group system
+    group radio system
 
 service irsc_util /vendor/bin/irsc_util "/vendor/etc/sec_config"
     class core
@@ -779,9 +759,6 @@ service wigignpt /vendor/bin/wigignpt
     group wifi net_admin
     disabled
 
-on property:persist.vendor.wigig.enable=1
-    start wigighalsvc
-
 on property:persist.vendor.wigig.npt.enable=1
     start wigignpt
 
@@ -829,7 +806,6 @@ service ptt_socket_app /vendor/bin/ptt_socket_app -d
     class main
     user root
     group root
-    disabled
     oneshot
 
 service ptt_ffbm /vendor/bin/ptt_socket_app -f -d
@@ -845,17 +821,12 @@ service wifi_ftmd /vendor/bin/wifi_ftmd
     disabled
     oneshot
 
-on property:wifi.ftmd.load=true
-    start openwifi
-on property:wifi.ftmd.load=false
-    stop openwifi
-
-
 service cnss_diag /vendor/bin/cnss_diag -q -f
     class main
     user system
     group system wifi inet net_admin sdcard_rw media_rw diag
     oneshot
+    capabilities NET_ADMIN
 
 service cnss-daemon /vendor/bin/cnss-daemon -n -l
     class late_start
@@ -863,7 +834,7 @@ service cnss-daemon /vendor/bin/cnss-daemon -n -l
     group system inet net_admin wifi
     capabilities NET_ADMIN
 
-on property:sys.shutdown.requested=*
+on property:sys.powerctl=*
     stop cnss-daemon
 
 service dhcpcd_bt-pan /system/bin/dhcpcd -BKLG
@@ -957,11 +928,6 @@ service wifi-crda /vendor/bin/init.crda.sh
    user root
    disabled
    oneshot
-
-service panel-info /system/vendor/bin/init.panel_info.sh
-    class core
-    user root
-    oneshot
 
 on property:sys.boot_completed=1
     start qcom-post-boot
@@ -1075,21 +1041,16 @@ on property:sys.qbcharger.enable=false
 service diag_mdlog_start /vendor/bin/diag_mdlog
     class late_start
     user shell
-    group system diag oem_2901 sdcard_rw sdcard_r media_rw
+    group system oem_2901 sdcard_rw sdcard_r media_rw
     disabled
     oneshot
 
 service diag_mdlog_stop /vendor/bin/diag_mdlog -k
     class late_start
     user shell
-    group system diag oem_2901 sdcard_rw sdcard_r media_rw
+    group system oem_2901 sdcard_rw sdcard_r media_rw
     disabled
     oneshot
-
-on property:persist.sys.mdlog.enable=true
-    start diag_mdlog_start
-on property:persist.sys.mdlog.enable=false
-    start diag_mdlog_stop
 
 service qlogd /system/xbin/qlogd
     socket qlogd stream 0662 system system
@@ -1130,24 +1091,6 @@ service vendor.LKCore-dbg /vendor/bin/LKCore
     disabled
     user root
     group root system log diag net_raw
-
-service sdlog /system/bin/sdlog
-    class late_start
-    user root
-    disabled
-    oneshot
-
-on property:sys.logd_t2.enable=1
-    start sdlog
-
-on property:sys.logd.enable=1
-    start sdlog
-
-on property:persist.service.logd.enable=1
-    start sdlog
-on property:persist.service.logd.enable=0
-   setprop vendor.sdlog.run 0
-   stop sdlog
 
 # service for USER
 service vendor.LKCore-rel /vendor/bin/LKCore
@@ -1210,6 +1153,13 @@ service vppservice /vendor/bin/vppservice
     user media
     group camera
 
+service chre /vendor/bin/chre
+    class late_start
+    user system
+    group system
+    socket chre seqpacket 0660 root system
+    shutdown critical
+
 # Set vendor-ril lib path based on Meta version
 on property:vendor.rild.libpath=*
     setprop rild.libpath ${vendor.rild.libpath}
@@ -1219,96 +1169,14 @@ service seemp_healthd /vendor/bin/seemp_healthd
     user system
     group system
 
-# blueduttest service for RF BT test.
-service blueduttest /vendor/bin/sh /vendor/bin/bluedut.sh
-    class late_start
-    user root
-    group root
-    disabled
-    oneshot
-
-# openwifi service for RF wifi test.
-service openwifi /system/bin/sh /vendor/bin/wifitest.sh
-    class late_start
-    user root
-    disabled
-    oneshot
-
-# closewifi service for RF wifi test.
-service closewifi /system/bin/sh /vendor/bin/wifitest_close.sh
-    class late_start
-    user root
-    disabled
-    oneshot
-
-#for wifi myftm test
-service myftmftm /vendor/bin/sh /vendor/bin/myftm.agent.sh
-    oneshot
-    disabled
-on property:persist.sys.myftm=1
-    start myftmftm
-
-#zhufanghua@longcheer.com
-service btclose /vendor/bin/sh /vendor/bin/bt_close.sh
-	user root
-	group root
-	oneshot
-	disabled
-on property:sys.closebt=1
-	start btclose
-
-service wdsdaemon /vendor/bin/wdsdaemon -su
-	user root
-	group root
-	oneshot
-	disabled
-
-on property:sys.start_wdsdaemon=1
-	start wdsdaemon
-
-on property:sys.start_wdsdaemon=0
-	stop wdsdaemon
-
-#lct add runin
-on property:persist.sys.runin=enable
-    write /sys/class/power_supply/battery/device/BatteryTestStatus 1
-
-on property:persist.sys.runin=disable
-    write /sys/class/power_supply/battery/device/BatteryTestStatus 0
-
-#lct add phone call status
-on property:sys.thermal.isincall=1
-    write /sys/class/power_supply/battery/device/thermalcall 1
-
-on property:sys.thermal.isincall=0
-    write /sys/class/power_supply/battery/device/thermalcall 0
-
-#Add command for PA test begin
-service LctDiagSendData /vendor/bin/LctDiagSendData
-    class core
-    user root
-    oneshot
-    disabled
-#on property:persist.sys.lctdiagsenddata=1
-#    start LctDiagSendData
-#on property:persist.sys.lctdiagsenddata=0
-#    stop LctDiagSendData
-on property:ro.runtime.firstboot=*
-    start LctDiagSendData
-#Add command for PA test end
 service power_off_alarm /vendor/bin/power_off_alarm
     class core
     group system
     disabled
     oneshot
 
-service config_bt_addr /vendor/bin/btnvtool -O
-    class core
-    user bluetooth
-    group bluetooth radio
+service bugreport /system/bin/dumpstate -d -p -B -z -o /data/user_de/0/com.android.shell/files/bugreports/bugreport
+    class main
+    disabled
     oneshot
-
-service goodix_script /vendor/bin/init.goodix.sh
-    class late_start
-    user system
-    oneshot
+    keycodes 114 115 116

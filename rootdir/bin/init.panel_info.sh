@@ -151,69 +151,6 @@ for i in $(seq 5); do
     sleep 1
     fi
 done
-
-for i in $(seq 5); do
-    if [ -f /sys/bus/i2c/devices/4-0049/panel_display ]; then
-    # St
-    panel_display=`cat /sys/bus/i2c/devices/4-0049/panel_display`
-    if [ -n "$panel_display" ]; then
-        /system/bin/log -p i -t panel-info-sh Get panel_display successfully from 4-0049 $panel_display
-        break
-    else
-        /system/bin/log -p i -t panel-info-sh Get panel_display unsuccessfully, try again...
-        sleep 1
-        continue
-    fi
-    # Synaptics
-    elif [ -f /sys/bus/i2c/devices/4-0020/panel_display ]; then
-    panel_display=`cat /sys/bus/i2c/devices/4-0020/panel_display`
-    if [ -n "$panel_display" ]; then
-        /system/bin/log -p i -t panel-info-sh Get panel_display successfully from 4-0020 $panel_display
-        break
-    else
-        /system/bin/log -p i -t panel-info-sh Get panel_display unsuccessfully, try again...
-        sleep 1
-        continue
-    fi
-    #Focal
-    elif [ -f /sys/bus/i2c/devices/4-0038/panel_display ]; then
-    panel_display=`cat /sys/bus/i2c/devices/4-0038/panel_display`
-    if [ -n "$panel_display" ]; then
-        /system/bin/log -p i -t panel-info-sh Get panel_display successfully from 4-0038 $panel_display
-        break
-    else
-        /system/bin/log -p i -t panel-info-sh Get panel_display unsuccessfully, try again...
-        sleep 1
-        continue
-    fi
-    #Goodix
-    elif [ -f /sys/bus/i2c/devices/4-005d/panel_display ]; then
-    panel_display=`cat /sys/bus/i2c/devices/4-005d/panel_display`
-    if [ -n "$panel_display" ]; then
-        /system/bin/log -p i -t panel-info-sh Get panel_display successfully from 4-005d $panel_display
-        break
-    else
-        /system/bin/log -p i -t panel-info-sh Get panel_display unsuccessfully, try again...
-        sleep 1
-        continue
-    fi
-    #Novatek
-    elif [ -f /sys/bus/i2c/devices/4-0062/panel_display ]; then
-    panel_display=`cat /sys/bus/i2c/devices/4-0062/panel_display`
-    if [ -n "$panel_display" ]; then
-        /system/bin/log -p i -t panel-info-sh Get panel_display successfully from 4-0062 $panel_display
-        break
-    else
-        /system/bin/log -p i -t panel-info-sh Get panel_display unsuccessfully, try again...
-        sleep 1
-        continue
-    fi
-    else
-    panel_display="0"
-    /system/bin/log -p i -t panel-info-sh Get panel_display unsuccessfully, try again...
-    sleep 1
-    fi
-done
 case "$color" in
     "1")
         setprop sys.panel.color WHITE
@@ -322,48 +259,7 @@ case "$panel_vendor" in
     "R")
         setprop sys.panel.vendor VITALINK
         ;;
-    "S")
-        setprop sys.panel.vendor CSOT
-        ;;
     *)
         setprop sys.panel.vendor UNKNOWN
-        ;;
-esac
-case "$panel_display" in
-    "1")
-        setprop sys.panel.display JDI
-        ;;
-    "2")
-        setprop sys.panel.display LGD
-        ;;
-    "3")
-        setprop sys.panel.display SHARP
-        ;;
-    "4")
-        setprop sys.panel.display AUO
-        ;;
-    "5")
-        setprop sys.panel.display BOE
-        ;;
-    "6")
-        setprop sys.panel.display TIANMA
-        ;;
-    "7")
-        setprop sys.panel.display EBBG
-        ;;
-    "8")
-        setprop sys.panel.display SDC
-        ;;
-    "9")
-        setprop sys.panel.display EDO
-        ;;
-    "0")
-        setprop sys.panel.display OFILM
-        ;;
-    "B")
-        setprop sys.panel.display CSOT
-        ;;
-    *)
-        setprop sys.panel.display UNKNOWN
         ;;
 esac
