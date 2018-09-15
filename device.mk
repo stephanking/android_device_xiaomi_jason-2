@@ -344,6 +344,7 @@ PRODUCT_COPY_FILES += \
 # Ramdisk
 PRODUCT_PACKAGES += \
     fstab.qcom \
+    init.panel_info.sh \
     init.qcom.rc \
     init.class_main.sh \
     init.qcom.sh \
