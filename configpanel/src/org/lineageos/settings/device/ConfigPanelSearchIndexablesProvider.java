@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2016 The CyanogenMod Project
- *           (C) 2017 The LineageOS Project
+ *           (C) 2017-2018 The LineageOS Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,7 +52,9 @@ public class ConfigPanelSearchIndexablesProvider extends SearchIndexablesProvide
     @Override
     public Cursor queryXmlResources(String[] projection) {
         MatrixCursor cursor = new MatrixCursor(INDEXABLES_XML_RES_COLUMNS);
-        cursor.addRow(generateResourceRef(INDEXABLE_RES[SEARCH_IDX_BUTTON_PANEL]));
+        if (Startup.hasButtonNodes() /* show button panel */) {
+            cursor.addRow(generateResourceRef(INDEXABLE_RES[SEARCH_IDX_BUTTON_PANEL]));
+        }
         return cursor;
     }
 
@@ -70,13 +72,11 @@ public class ConfigPanelSearchIndexablesProvider extends SearchIndexablesProvide
 
     @Override
     public Cursor queryRawData(String[] projection) {
-        MatrixCursor cursor = new MatrixCursor(INDEXABLES_RAW_COLUMNS);
-        return cursor;
+        return new MatrixCursor(INDEXABLES_RAW_COLUMNS);
     }
 
     @Override
     public Cursor queryNonIndexableKeys(String[] projection) {
-        MatrixCursor cursor = new MatrixCursor(NON_INDEXABLES_KEYS_COLUMNS);
-        return cursor;
+        return new MatrixCursor(NON_INDEXABLES_KEYS_COLUMNS);
     }
 }

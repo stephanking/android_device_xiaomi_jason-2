@@ -36,17 +36,48 @@ public class Startup extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         final String action = intent.getAction();
         if (lineageos.content.Intent.ACTION_INITIALIZE_LINEAGE_HARDWARE.equals(action)) {
-            enableComponent(context, ButtonSettingsActivity.class.getName());
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 
-            // Restore saved preference values
-            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-            for (String key : Constants.sBackendsMap.keySet()) {
-                SwitchPreferenceBackend backend = Constants.sBackendsMap.get(key);
-                Boolean value = preferences.getBoolean(key, backend.getDefaultValue());
+            // Disable button settings if needed
+            if (!hasButtonNodes()) {
+                disableComponent(context, ButtonSettingsActivity.class.getName());
+            } else {
+                enableComponent(context, ButtonSettingsActivity.class.getName());
 
-                backend.setValue(value);
+                // Restore nodes to saved preference values
+                for (String pref : Constants.sButtonPrefKeys) {
+                    String node, value;
+                    if (Constants.sStringNodePreferenceMap.containsKey(pref)) {
+                        node = Constants.sStringNodePreferenceMap.get(pref);
+                        value = Utils.getPreferenceString(context, pref);
+                    } else {
+                        node = Constants.sBooleanNodePreferenceMap.get(pref);
+                        value = Utils.isPreferenceEnabled(context, pref) ? "1" : "0";
+                    }
+                    if (!FileUtils.writeLine(node, value)) {
+                        Log.w(TAG, "Write to node " + node +
+                            " failed while restoring saved preference values");
+                    }
+                }
+
+                // Send initial broadcasts
+                final boolean shouldEnablePocketMode =
+                        prefs.getBoolean(Constants.FP_POCKETMODE_KEY, true);
+                Utils.broadcastCustIntent(context, shouldEnablePocketMode);
             }
         }
+    }
+
+    static boolean hasButtonNodes() {
+        return FileUtils.fileExists(Constants.BUTTON_SWAP_NODE);
+    }
+
+    private void disableComponent(Context context, String component) {
+        ComponentName name = new ComponentName(context, component);
+        PackageManager pm = context.getPackageManager();
+        pm.setComponentEnabledSetting(name,
+                PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                PackageManager.DONT_KILL_APP);
     }
 
     private void enableComponent(Context context, String component) {

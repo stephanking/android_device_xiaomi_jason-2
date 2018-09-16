@@ -21,6 +21,8 @@
     android:versionName="2.5"
     android:sharedUserId="android.uid.system">
 
+    <protected-broadcast android:name="org.lineageos.settings.device.CUST_UPDATE" />
+
     <uses-permission android:name="lineageos.permission.HARDWARE_ABSTRACTION_ACCESS" />
 
     <uses-sdk

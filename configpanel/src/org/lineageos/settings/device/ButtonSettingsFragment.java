@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2016 The CyanogenMod Project
- *           (C) 2017 The LineageOS Project
+ *           (C) 2017-2018 The LineageOS Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,15 +18,12 @@
 package org.lineageos.settings.device;
 
 import android.app.ActionBar;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v14.preference.PreferenceFragment;
 import android.support.v14.preference.SwitchPreference;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.Preference.OnPreferenceChangeListener;
-import android.support.v7.preference.PreferenceCategory;
-import android.support.v7.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.view.MenuItem;
 
@@ -44,34 +41,67 @@ public class ButtonSettingsFragment extends PreferenceFragment
     }
 
     @Override
-    public boolean onPreferenceChange(Preference pref, Object newValue) {
-        SwitchPreferenceBackend backend = Constants.sBackendsMap.get(pref.getKey());
-        Boolean value = (Boolean) newValue;
+    public void onResume() {
+        super.onResume();
+        updatePreferencesBasedOnDependencies();
+    }
 
-        backend.setValue(value);
+    @Override
+    public boolean onPreferenceChange(Preference preference, Object newValue) {
+        String node = Constants.sBooleanNodePreferenceMap.get(preference.getKey());
+        if (!TextUtils.isEmpty(node) && FileUtils.isFileWritable(node)) {
+            Boolean value = (Boolean) newValue;
+            FileUtils.writeLine(node, value ? "1" : "0");
+            return true;
+        }
+        node = Constants.sStringNodePreferenceMap.get(preference.getKey());
+        if (!TextUtils.isEmpty(node) && FileUtils.isFileWritable(node)) {
+            FileUtils.writeLine(node, (String) newValue);
+            return true;
+        }
 
-        return true;
+        if (Constants.FP_POCKETMODE_KEY.equals(preference.getKey())) {
+            Utils.broadcastCustIntent(getContext(), (Boolean) newValue);
+            return true;
+        }
+
+        return false;
     }
 
     @Override
     public void addPreferencesFromResource(int preferencesResId) {
         super.addPreferencesFromResource(preferencesResId);
-
         // Initialize node preferences
-        for (String key : Constants.sBackendsMap.keySet()) {
-            SwitchPreference pref = (SwitchPreference) findPreference(key);
-            if (pref == null) {
-                continue;
-            }
-
-            pref.setOnPreferenceChangeListener(this);
-
-            SwitchPreferenceBackend backend = Constants.sBackendsMap.get(key);
-            if (!backend.isValid()) {
-                pref.setEnabled(false);
+        for (String pref : Constants.sBooleanNodePreferenceMap.keySet()) {
+            SwitchPreference b = (SwitchPreference) findPreference(pref);
+            if (b == null) continue;
+            b.setOnPreferenceChangeListener(this);
+            String node = Constants.sBooleanNodePreferenceMap.get(pref);
+            if (FileUtils.isFileReadable(node)) {
+                String curNodeValue = FileUtils.readOneLine(node);
+                b.setChecked(curNodeValue.equals("1"));
             } else {
-                pref.setChecked(backend.getValue());
+                b.setEnabled(false);
             }
+        }
+        for (String pref : Constants.sStringNodePreferenceMap.keySet()) {
+            ListPreference l = (ListPreference) findPreference(pref);
+            if (l == null) continue;
+            l.setOnPreferenceChangeListener(this);
+            String node = Constants.sStringNodePreferenceMap.get(pref);
+            if (FileUtils.isFileReadable(node)) {
+                l.setValue(FileUtils.readOneLine(node));
+            } else {
+                l.setEnabled(false);
+            }
+        }
+
+        // Initialize other preferences whose keys are not associated with nodes
+        SwitchPreference b = (SwitchPreference) findPreference(Constants.FP_POCKETMODE_KEY);
+        if (!PackageManagerUtils.isAppInstalled(getContext(), "org.lineageos.pocketmode")) {
+            getPreferenceScreen().removePreference(b);
+        } else {
+            b.setOnPreferenceChangeListener(this);
         }
     }
 
@@ -82,5 +112,19 @@ public class ButtonSettingsFragment extends PreferenceFragment
             return true;
         }
         return false;
+    }
+
+    private void updatePreferencesBasedOnDependencies() {
+        for (String pref : Constants.sNodeDependencyMap.keySet()) {
+            SwitchPreference b = (SwitchPreference) findPreference(pref);
+            if (b == null) continue;
+            String dependencyNode = Constants.sNodeDependencyMap.get(pref)[0];
+            if (FileUtils.isFileReadable(dependencyNode)) {
+                String dependencyNodeValue = FileUtils.readOneLine(dependencyNode);
+                boolean shouldSetEnabled = dependencyNodeValue.equals(
+                        Constants.sNodeDependencyMap.get(pref)[1]);
+                Utils.updateDependentPreference(getContext(), b, pref, shouldSetEnabled);
+            }
+        }
     }
 }
