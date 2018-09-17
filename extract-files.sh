@@ -1,8 +1,7 @@
 #!/bin/bash
 #
 # Copyright (C) 2016 The CyanogenMod Project
-# Copyright (C) 2017 The LineageOS Project
-# Copyright (C) 2018 The LineageOS Project
+# Copyright (C) 2017-2018 The LineageOS Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,9 +18,8 @@
 
 set -e
 
-export DEVICE=jason
-export VENDOR=xiaomi
-export TREBLE_COMPATIBLE=1
+DEVICE=jason
+VENDOR=xiaomi
 
 # Load extract_utils and do some sanity checks
 MY_DIR="${BASH_SOURCE%/*}"
@@ -57,33 +55,33 @@ if [ -z "$SRC" ]; then
     SRC=adb
 fi
 
-# Initialize the helper for device
-setup_vendor "$DEVICE" "$VENDOR" "$LINEAGE_ROOT" true "$CLEAN_VENDOR"
+# Initialize the helper
+setup_vendor "$DEVICE" "$VENDOR" "$LINEAGE_ROOT" false "$CLEAN_VENDOR"
 
 extract "$MY_DIR"/proprietary-files.txt "$SRC" "$SECTION"
 
-COMMON_BLOB_ROOT="$LINEAGE_ROOT"/vendor/"$VENDOR"/"$DEVICE_COMMON"/proprietary
+DEVICE_BLOB_ROOT="$LINEAGE_ROOT"/vendor/"$VENDOR"/"$DEVICE"/proprietary
 
 #
 # Load camera configs from vendor
 #
-CAMERA2_SENSOR_MODULES="$COMMON_BLOB_ROOT"/vendor/lib/libmmcamera2_sensor_modules.so
+CAMERA2_SENSOR_MODULES="$DEVICE_BLOB_ROOT"/vendor/lib/libmmcamera2_sensor_modules.so
 sed -i "s|/system/etc/camera/|/vendor/etc/camera/|g" "$CAMERA2_SENSOR_MODULES"
 
 #
 # Remove unused libcamera_client.so dependency in libsac.so
 #
-SAC="$COMMON_BLOB_ROOT"/vendor/lib/libsac.so
+SAC="$DEVICE_BLOB_ROOT"/vendor/lib/libsac.so
 patchelf --remove-needed libcamera_client.so "$SAC"
 
 # Treble sucks
 #
-patchelf --replace-needed android.hardware.gnss@1.0.so android.hardware.gnss@1.0-v27.so $COMMON_BLOB_ROOT/vendor/lib64/vendor.qti.gnss@1.0_vendor.so
+patchelf --replace-needed android.hardware.gnss@1.0.so android.hardware.gnss@1.0-v27.so $DEVICE_BLOB_ROOT/vendor/lib64/vendor.qti.gnss@1.0_vendor.so
 
 #
 # Remove unused libmedia.so dependency in the IMS stack
 #
-DPLMEDIA="$COMMON_BLOB_ROOT"/vendor/lib64/lib-dplmedia.so
+DPLMEDIA="$DEVICE_BLOB_ROOT"/vendor/lib64/lib-dplmedia.so
 patchelf --remove-needed libmedia.so "$DPLMEDIA"
 
 "$MY_DIR"/setup-makefiles.sh
