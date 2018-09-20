@@ -83,6 +83,7 @@ patchelf --remove-needed libmedia.so "$DPLMEDIA"
 #
 # Replace libicuuc.so with libicuuc-v27.so for libMiCameraHal.so
 #
+MI_CAMERA_HAL="$DEVICE_BLOB_ROOT"/vendor/lib/libMiCameraHal.so
 ICUUC_V27="$DEVICE_BLOB_ROOT"/vendor/lib/libicuuc-v27.so
 patchelf --replace-needed libicuuc.so libicuuc-v27.so "$MI_CAMERA_HAL"
 patchelf --set-soname libicuuc-v27.so "$ICUUC_V27"
