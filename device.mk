@@ -191,7 +191,11 @@ PRODUCT_PACKAGES += \
     XiaomiDoze
 
 # Fingerprint sensor
+PRODUCT_PACKAGES += \
     libpowermanager.vendor
+
+PRODUCT_PACKAGES += \
+    android.hardware.biometrics.fingerprint@2.1-service.xiaomi_sdm660
 
 # DRM
 PRODUCT_PACKAGES += \
