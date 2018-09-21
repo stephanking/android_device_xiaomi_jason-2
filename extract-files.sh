@@ -96,4 +96,15 @@ MINIKIN_V27="$DEVICE_BLOB_ROOT"/vendor/lib/libminikin-v27.so
 patchelf --replace-needed libminikin.so libminikin-v27.so "$CAMERA_SDM660"
 patchelf --set-soname libminikin-v27.so "$MINIKIN_V27"
 
+#
+# Replace android.frameworks.sensorservice@1.0.so with android.frameworks.sensorservice@1.0-v27.so for libvideorefiner.so
+#
+patchelf --replace-needed android.frameworks.sensorservice@1.0.so android.frameworks.sensorservice@1.0-v27.so $DEVICE_BLOB_ROOT/vendor/lib/libvideorefiner.so
+
+#
+# Correct android.hidl.manager@1.0-java jar name
+#
+QTI_LIBPERMISSIONS="$DEVICE_BLOB_ROOT"/etc/permissions/qti_libpermissions.xml
+sed -i "s|name=\"android.hidl.manager-V1.0-java|name=\"android.hidl.manager@1.0-java|g" "$QTI_LIBPERMISSIONS"
+
 "$MY_DIR"/setup-makefiles.sh
