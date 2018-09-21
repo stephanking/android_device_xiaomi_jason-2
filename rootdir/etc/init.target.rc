@@ -41,12 +41,12 @@ on init
     write /dev/stune/foreground/schedtune.colocate 0
     write /dev/stune/top-app/schedtune.colocate 1
 
-# Add a cpuset for the camera daemon
-# We want all cores for camera
-    mkdir /dev/cpuset/camera-daemon
+    mkdir /cust 0771 system system
+
+    # Add a cpuset for the camera daemon
+    mkdir /dev/cpuset/camera-daemon 0750 cameraserver cameraserver
     write /dev/cpuset/camera-daemon/cpus 0-7
     write /dev/cpuset/camera-daemon/mems 0
-    chown cameraserver cameraserver /dev/cpuset/camera-daemon
     chown cameraserver cameraserver /dev/cpuset/camera-daemon/tasks
     chmod 0660 /dev/cpuset/camera-daemon/tasks
 
@@ -61,24 +61,26 @@ on init
     chmod 0660 /dev/lirc0
 
 on fs
-    # Start HW service manager early
-    start hwservicemanager
-
-    mount_all /vendor/etc/fstab.qcom --early
+    wait /dev/block/platform/soc/${ro.boot.bootdevice}
+    symlink /dev/block/platform/soc/${ro.boot.bootdevice} /dev/block/bootdevice
+    mount_all /vendor/etc/fstab.qcom
+    swapon_all /vendor/etc/fstab.qcom
 
     # Keeping following partitions outside fstab file. As user may not have
     # these partition flashed on the device. Failure to mount any partition in fstab file
     # results in failure to launch late-start class.
 
-    wait /dev/block/bootdevice/by-name/persist
-    mount ext4 /dev/block/bootdevice/by-name/persist /persist nosuid nodev noatime barrier=1
     mkdir /persist/data 0700 system system
     mkdir /persist/bms 0700 root system
     restorecon_recursive /persist
+
+    restorecon_recursive /persistbak
+
+
     write /sys/kernel/boot_adsp/boot 1
 
-    # Bluetooth
-    mkdir /persist/wlan_bt 0700 system system
+    chmod 0664 /sys/class/thermal/thermal_message/sconfig
+    chown system system /sys/class/thermal/thermal_message/sconfig
 
 on post-fs
     start vendor.qseecomd
@@ -87,110 +89,12 @@ on post-fs
 on init
     write /sys/module/qpnp_rtc/parameters/poweron_alarm 1
 
-    # Start services for bootanim
-    start vendor.surfaceflinger
-    start vendor.bootanim
-    start vendor.hwcomposer-2-1
-    start vendor.configstore-hal
-    start vendor.gralloc-2-0
-
-    # Set up schedtune
-    write /dev/stune/background/schedtune.colocate 0
-    write /dev/stune/foreground/schedtune.colocate 0
-    write /dev/stune/foreground/schedtune.sched_boost_no_override 1
-    write /dev/stune/schedtune.colocate 0
-    write /dev/stune/top-app/schedtune.colocate 1
-    write /dev/stune/top-app/schedtune.sched_boost_no_override 1
-
-    # Configure core ctl
-    write /sys/devices/system/cpu/cpu4/core_ctl/min_cpus 0
-    write /sys/devices/system/cpu/cpu4/core_ctl/max_cpus 4
-    write /sys/devices/system/cpu/cpu4/core_ctl/busy_up_thres 60
-    write /sys/devices/system/cpu/cpu4/core_ctl/busy_down_thres 30
-    write /sys/devices/system/cpu/cpu4/core_ctl/offline_delay_ms 100
-    write /sys/devices/system/cpu/cpu4/core_ctl/is_big_cluster 1
-    write /sys/devices/system/cpu/cpu4/core_ctl/task_thres 4
-
-    # Set b.L scheduler parameters
-    write /proc/sys/kernel/sched_upmigrate 95
-    write /proc/sys/kernel/sched_downmigrate 90
-    write /proc/sys/kernel/sched_group_upmigrate 100
-    write /proc/sys/kernel/sched_group_downmigrate 95
-    write /proc/sys/kernel/sched_select_prev_cpu_us 0
-    write /proc/sys/kernel/sched_freq_inc_notify 400000
-    write /proc/sys/kernel/sched_freq_dec_notify 400000
-    write /proc/sys/kernel/sched_spill_nr_run 5
-    write /proc/sys/kernel/sched_restrict_cluster_spill 1
-
-    # Bring CPUs online
-    write /sys/devices/system/cpu/cpu0/online 1
-    write /sys/devices/system/cpu/cpu1/online 1
-    write /sys/devices/system/cpu/cpu2/online 1
-    write /sys/devices/system/cpu/cpu3/online 1
-    write /sys/devices/system/cpu/cpu4/online 1
-    write /sys/devices/system/cpu/cpu5/online 1
-    write /sys/devices/system/cpu/cpu6/online 1
-    write /sys/devices/system/cpu/cpu7/online 1
-
-    # Disable thermal bcl hotplug to switch governor
-    write /sys/module/msm_thermal/core_control/enabled 0
-
-    # Configure governor settings for little cluster
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "interactive"
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/use_sched_load 1
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/use_migration_notif 1
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay 19000
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load 90
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate 20000
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq 1113600
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/io_is_busy 1
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads "83 1843200:95"
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time 19000
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/max_freq_hysteresis 79000
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 633600
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/ignore_hispeed_on_notif 1
-
-    # Configure governor settings for big cluster
-    write /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor "interactive"
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/use_sched_load 1
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/use_migration_notif 1
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay 19000
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load 90
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate 20000
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/hispeed_freq 1747200
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/io_is_busy 1
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads "83 2150400:90 2208000:95"
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/min_sample_time 19000
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/max_freq_hysteresis 79000
-    write /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq 1113600
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/ignore_hispeed_on_notif 1
-
-    # Enable thermal and BCL hotplug
-    write /sys/module/msm_thermal/core_control/enabled 1
-
-    # Enable input boost configuration
-    write /sys/module/cpu_boost/parameters/input_boost_freq "0:1113600"
-    write /sys/module/cpu_boost/parameters/input_boost_ms 100
-
-    # Disable retention
-    write /sys/module/lpm_levels/system/pwr/cpu0/ret/idle_enabled N
-    write /sys/module/lpm_levels/system/pwr/cpu1/ret/idle_enabled N
-    write /sys/module/lpm_levels/system/pwr/cpu2/ret/idle_enabled N
-    write /sys/module/lpm_levels/system/pwr/cpu3/ret/idle_enabled N
-    write /sys/module/lpm_levels/system/perf/cpu4/ret/idle_enabled N
-    write /sys/module/lpm_levels/system/perf/cpu5/ret/idle_enabled N
-    write /sys/module/lpm_levels/system/perf/cpu6/ret/idle_enabled N
-    write /sys/module/lpm_levels/system/perf/cpu7/ret/idle_enabled N
-    write /sys/module/lpm_levels/system/pwr/pwr-l2-dynret/idle_enabled N
-    write /sys/module/lpm_levels/system/pwr/pwr-l2-ret/idle_enabled N
-    write /sys/module/lpm_levels/system/perf/perf-l2-dynret/idle_enabled N
-    write /sys/module/lpm_levels/system/perf/perf-l2-ret/idle_enabled N
-
 on post-fs-data
     mkdir /data/tombstones/modem 0771 system system
     mkdir /data/tombstones/lpass 0771 system system
     mkdir /data/tombstones/wcnss 0771 system system
     mkdir /data/tombstones/dsps 0771 system system
+    mkdir /persist/qti_fp 0700 system system
     mkdir /data/misc/seemp 0700 system system
     mkdir /data/misc/tloc 0700 system drmrpc
 
@@ -198,9 +102,9 @@ on boot
     start vendor.rmt_storage
     write /dev/cpuset/top-app/cpus 0-7
     write /dev/cpuset/foreground/cpus 0-7
-    write /dev/cpuset/foreground/boost/cpus 0-7
     write /dev/cpuset/background/cpus 0-7
     write /dev/cpuset/system-background/cpus 0-7
+    write /dev/cpuset/restricted/cpus 0-7
     ####Regionalization config and prop files####
     chmod 0644 /persist/speccfg/spec
     chmod 0644 /persist/speccfg/devicetype
@@ -219,21 +123,18 @@ on boot
     chown system system /persist/speccfg/submask
     chown system system /persist/speccfg/partition
 
-    # Wifi firmware reload path
-    chown wifi wifi /sys/module/wlan/parameters/fwpath
-
-   setprop wlan.driver.status "ok"
-
     # Touchscreen
     chown system system /sys/bus/i2c/devices/4-0020/input/input1/wake_gesture
     chown system system /sys/bus/i2c/devices/4-0020/input/input1/0dbutton
     chown system system /sys/bus/i2c/devices/4-0020/input/input1/reversed_keys
 
+    # Wifi firmware reload path
+    chown wifi wifi /sys/module/wlan/parameters/fwpath
+
 #Peripheral manager
 service vendor.per_mgr /vendor/bin/pm-service
     class core
-    user system
-    group system
+    user root
     ioprio rt 4
 
 service vendor.per_proxy /vendor/bin/pm-proxy
@@ -245,18 +146,8 @@ service vendor.per_proxy /vendor/bin/pm-proxy
 on property:init.svc.per_mgr=running
     start vendor.per_proxy
 
-on property:sys.shutdown.requested=*
+on property:sys.powerctl=*
     stop vendor.per_proxy
-
-on property:sys.boot_completed=1
-    setprop sys.io.scheduler "bfq"
-
-    # Wait for hwservicemanager ready since fsck might be triggered in mount_all --late
-    # In such case, init won't responce the property_set from hwservicemanager and then
-    # cause services for bootanim not running.
-    wait_for_prop hwservicemanager.ready true
-    # Mount RW partitions which need run fsck
-    mount_all /vendor/etc/fstab.qcom --late
 
 service vendor.qseecomd /vendor/bin/qseecomd
    class core
@@ -302,25 +193,29 @@ service vendor.energy-awareness /vendor/bin/energy-awareness
     oneshot
 
 service vendor.pd_mapper /vendor/bin/pd-mapper
-    class core
+     class core
 
 on property:vendor.ims.QMI_DAEMON_STATUS=1
     start vendor.imsdatadaemon
 
 service vendor.ims_rtp_daemon /vendor/bin/ims_rtp_daemon
-    class main
-    user system
-    group radio diag inet log
-    writepid /dev/cpuset/system-background/tasks
+   class main
+   user system
+   group radio diag inet log
+   disabled
 
 service vendor.imsrcsservice /vendor/bin/imsrcsd
-    class main
-    user system
-    group radio diag inet log
-    writepid /dev/cpuset/system-background/tasks
+   class main
+   user system
+   group radio diag inet log
+   disabled
 
+# add for HMI_L8866_A01-502: begin
 on property:vendor.ims.DATA_DAEMON_STATUS=1
-    restart vendor.ims_rtp_daemon
+    start vendor.ims_rtp_daemon
+    start vendor.imsrcsservice
+    setprop persist.rcs.supported 0
+# add for HMI_L8866_A01-502: end
 
 service vendor.ppd /vendor/bin/mm-pp-dpps
     class late_start
@@ -347,62 +242,73 @@ on property:init.svc.zygote=running
 on property:init.svc.zygote=restarting
     stop vendor.ppd
 
-on property:vold.decrypt=trigger_reset_main
-    stop audio-hal-2-0
-
-on property:vold.decrypt=trigger_restart_framework
-    start audio-hal-2-0
+on property:sys.boot_completed=1
+    setprop sys.io.scheduler "bfq"
 
 on charger
-    write /sys/class/input/input0/enabled 0
-    write /sys/class/input/input1/enabled 0
-    write /sys/class/input/input2/enabled 0
-    write /sys/class/input/input3/enabled 0
-    write /sys/class/input/input4/enabled 0
-
-    write /sys/devices/system/cpu/cpu0/online 1
-    write /sys/devices/system/cpu/cpu1/online 1
-    write /sys/devices/system/cpu/cpu2/online 0
-    write /sys/devices/system/cpu/cpu3/online 0
-    write /sys/devices/system/cpu/cpu4/online 0
-    write /sys/devices/system/cpu/cpu5/online 0
-    write /sys/devices/system/cpu/cpu6/online 0
-    write /sys/devices/system/cpu/cpu7/online 0
-    write /sys/module/msm_thermal/parameters/enabled N
-
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "userspace"
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 633600
-    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor "userspace"
-    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_max_freq 633600
-
-    wait /dev/block/bootdevice/by-name/system
-    mount ext4 /dev/block/bootdevice/by-name/system /system ro barrier=1
-
-    wait /dev/block/bootdevice/by-name/persist
-    mount ext4 /dev/block/bootdevice/by-name/persist /persist nosuid nodev barrier=1
-
-    wait /dev/block/bootdevice
-
     load_system_props
-
+    start vendor.qcom-post-boot
     start vendor.hvdcp_opti
-    start vendor.thermal-engine
-
     setprop sys.usb.configfs 1
     setprop sys.usb.config adb
+    start vendor.thermal-engine
 
-    # Enable ZRAM on boot_complete
-    swapon_all /vendor/etc/fstab.qcom
-
-    # Run post poot script
-    start vendor.qcom-post-boot
+service vendor.qfp-daemon /vendor/bin/qfp-daemon
+    class late_start
+    user system
+    group system drmrpc diag input
 
 service vendor.hvdcp_opti /vendor/bin/hvdcp_opti
      class main
      user root
      group system wakelock
+	
+on property:persist.sys.display_srgb=1
+    write /sys/class/graphics/fb0/msm_fb_srgb 1
 
-service vendor.panel-info-sh /system/bin/sh /vendor/etc/init.panel_info.sh
-    class core
-    user root
-    oneshot
+on property:persist.sys.display_srgb=2
+    write /sys/class/graphics/fb0/msm_fb_srgb 2
+
+on property:sys.dynamic_debug=1
+   write /sys/kernel/debug/dynamic_debug/control "file q6afe.c +p" 
+   write /sys/kernel/debug/dynamic_debug/control "file q6adm.c +p" 
+   write /sys/kernel/debug/dynamic_debug/control "file msm-pcm-routing-v2.c +p" 
+   write /sys/kernel/debug/dynamic_debug/control "file msm-dai-q6-v2.c +p" 
+   write /sys/kernel/debug/dynamic_debug/control "file soc-core.c +p" 
+   write /sys/kernel/debug/dynamic_debug/control "file soc-dapm.c +p" 
+   write /sys/kernel/debug/dynamic_debug/control "file sdm660-internal.c +p" 
+   write /sys/kernel/debug/dynamic_debug/control "file sdm660-common.c +p" 
+   write /sys/kernel/debug/dynamic_debug/control "file msm-analog-cdc.c +p" 
+   write /sys/kernel/debug/dynamic_debug/control "file msm-digital-cdc.c +p"
+   write /sys/kernel/debug/dynamic_debug/control "file wcd-mbhc-v2.c +p" 
+
+on property:sys.dynamic_debug=0
+   write /sys/kernel/debug/dynamic_debug/control "file q6afe.c -p" 
+   write /sys/kernel/debug/dynamic_debug/control "file q6adm.c -p" 
+   write /sys/kernel/debug/dynamic_debug/control "file msm-pcm-routing-v2.c -p" 
+   write /sys/kernel/debug/dynamic_debug/control "file msm-dai-q6-v2.c -p" 
+   write /sys/kernel/debug/dynamic_debug/control "file soc-core.c -p" 
+   write /sys/kernel/debug/dynamic_debug/control "file soc-dapm.c -p" 
+   write /sys/kernel/debug/dynamic_debug/control "file sdm660-internal.c -p" 
+   write /sys/kernel/debug/dynamic_debug/control "file sdm660-common.c -p" 
+   write /sys/kernel/debug/dynamic_debug/control "file msm-analog-cdc.c -p" 
+   write /sys/kernel/debug/dynamic_debug/control "file msm-digital-cdc.c -p"
+   write /sys/kernel/debug/dynamic_debug/control "file wcd-mbhc-v2.c -p"
+
+on property:persist.sys.display_ce=4
+    write /sys/class/graphics/fb0/msm_fb_ce 1
+
+on property:persist.sys.display_ce=0
+    write /sys/class/graphics/fb0/msm_fb_ce 2
+
+on property:persist.sys.display_cabc=1
+    write /sys/class/graphics/fb0/msm_fb_cabc 1
+
+on property:persist.sys.display_cabc=2
+    write /sys/class/graphics/fb0/msm_fb_cabc 2
+
+on property:persist.sys.display_gamma=1
+    write /sys/class/graphics/fb0/msm_fb_gamma 1
+
+on property:persist.sys.display_gamma=2
+    write /sys/class/graphics/fb0/msm_fb_gamma 2
