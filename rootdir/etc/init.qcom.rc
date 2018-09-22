@@ -553,7 +553,6 @@ service vendor.port-bridge /vendor/bin/port-bridge
 
 service vendor.netmgrd /vendor/bin/netmgrd
     class main
-    disabled
 
 service vendor.ipacm-diag /vendor/bin/ipacm-diag
     class main
