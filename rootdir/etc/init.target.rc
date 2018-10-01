@@ -258,6 +258,12 @@ service vendor.qfp-daemon /vendor/bin/qfp-daemon
     user system
     group system drmrpc diag input
 
+service vendor.readmac /vendor/bin/readmac
+    class main
+    user system
+    group system net_raw
+    oneshot
+
 service vendor.hvdcp_opti /vendor/bin/hvdcp_opti
      class main
      user root

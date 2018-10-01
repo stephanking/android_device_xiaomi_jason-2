@@ -417,18 +417,21 @@ PRODUCT_COPY_FILES += \
 
 # Wifi
 PRODUCT_PACKAGES += \
-    android.hardware.wifi@1.0-service \
     hostapd \
     hostapd_cli \
-    ipacm \
-    IPACM_cfg.xml \
     libqsap_sdk \
     libQWiFiSoftApCfg \
     libwifi-hal-qcom \
+    libwpa_client \
     readmac \
     wificond \
+    wifilogd \
     wpa_supplicant \
     wpa_supplicant.conf
+
+PRODUCT_PACKAGES += \
+    android.hardware.wifi@1.0-service \
+    vendor.qti.hardware.wifi.supplicant@1.0_vendor
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/wifi/p2p_supplicant_overlay.conf:$(TARGET_COPY_OUT_VENDOR)/etc/wifi/p2p_supplicant_overlay.conf \
