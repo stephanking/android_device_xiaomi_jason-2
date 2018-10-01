@@ -757,6 +757,7 @@ etc/permissions/qcrilhook.xml
 etc/permissions/telephonyservice.xml
 framework/embmslibrary.jar
 framework/qcrilhook.jar
+framework/qti-telephony-common.jar|7a2ae3ab351f8d7f1c85ae3e60e0b5df4a2f67a4
 framework/QtiTelephonyServicelibrary.jar
 framework/uimlpalibrary.jar
 -priv-app/qcrilmsgtunnel/qcrilmsgtunnel.apk
