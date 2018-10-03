@@ -22,7 +22,13 @@ $(call inherit-product, build/target/product/embedded.mk)
 # Inherit from our custom product configuration
 $(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
-$(call inherit-product, vendor/lineage/config/common_full_phone.mk)
+
+# Inherit some common Aosp stuff.
+$(call inherit-product, vendor/aosp/config/common_full_phone.mk)
+
+# PixelExperience stuff.
+TARGET_BOOT_ANIMATION_RES := 1080
+TARGET_GAPPS_ARCH := arm64
 
 # Bootanimation
 TARGET_BOOTANIMATION_HALF_RES := true
@@ -35,7 +41,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 $(call inherit-product, device/xiaomi/jason/device.mk)
 
 ## Device identifier. This must come after all inclusions
-PRODUCT_NAME := lineage_jason
+PRODUCT_NAME := aosp_jason
 PRODUCT_DEVICE := jason
 PRODUCT_MANUFACTURER := Xiaomi
 PRODUCT_BRAND := Xiaomi
