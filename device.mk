@@ -135,6 +135,7 @@ PRODUCT_PACKAGES += \
 
 # Camera
 PRODUCT_PACKAGES += \
+    GoogleCamera \
     MiuiCamera \
     camera.device@3.2-impl \
     camera.device@1.0-impl \
